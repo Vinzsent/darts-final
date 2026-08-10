@@ -1,0 +1,680 @@
+{
+  "communities": {
+    "0": [
+      "composer",
+      "composer_allow_plugins_pestphp_pest_plugin",
+      "composer_allow_plugins_php_http_discovery",
+      "composer_autoload",
+      "composer_autoload_dev",
+      "composer_autoload_dev_psr_4",
+      "composer_autoload_psr_4",
+      "composer_config",
+      "composer_config_allow_plugins",
+      "composer_config_optimize_autoloader",
+      "composer_config_preferred_install",
+      "composer_config_sort_packages",
+      "composer_description",
+      "composer_extra",
+      "composer_extra_laravel",
+      "composer_keywords",
+      "composer_laravel_dont_discover",
+      "composer_license",
+      "composer_minimum_stability",
+      "composer_name",
+      "composer_prefer_stable",
+      "composer_psr_4_app",
+      "composer_psr_4_database_factories",
+      "composer_psr_4_database_seeders",
+      "composer_psr_4_tests",
+      "composer_require",
+      "composer_require_dev",
+      "composer_require_dev_fakerphp_faker",
+      "composer_require_dev_laravel_pail",
+      "composer_require_dev_laravel_pint",
+      "composer_require_dev_laravel_sail",
+      "composer_require_dev_mockery_mockery",
+      "composer_require_dev_nunomaduro_collision",
+      "composer_require_dev_phpunit_phpunit",
+      "composer_require_laravel_framework",
+      "composer_require_laravel_tinker",
+      "composer_require_php",
+      "composer_schema",
+      "composer_type",
+      "ref_framework",
+      "ref_laravel"
+    ],
+    "1": [
+      "app_http_controllers_inventorycontroller",
+      "app_http_controllers_inventorycontroller_inventorycontroller",
+      "app_http_controllers_inventorycontroller_inventorycontroller_construct",
+      "app_http_controllers_inventorycontroller_inventorycontroller_create",
+      "app_http_controllers_inventorycontroller_inventorycontroller_destroy",
+      "app_http_controllers_inventorycontroller_inventorycontroller_edit",
+      "app_http_controllers_inventorycontroller_inventorycontroller_index",
+      "app_http_controllers_inventorycontroller_inventorycontroller_movements",
+      "app_http_controllers_inventorycontroller_inventorycontroller_show",
+      "app_http_controllers_inventorycontroller_inventorycontroller_update",
+      "app_http_requests_updateinventoryrequest",
+      "app_http_requests_updateinventoryrequest_updateinventoryrequest",
+      "app_http_requests_updateinventoryrequest_updateinventoryrequest_authorize",
+      "app_http_requests_updateinventoryrequest_updateinventoryrequest_rules",
+      "app_models_inventory_inventory",
+      "app_models_inventory_inventory_creator",
+      "app_models_inventory_inventory_getislowstockattribute",
+      "app_models_inventory_inventory_getstockstatusattribute",
+      "app_models_inventory_inventory_scopeactive",
+      "app_models_inventory_inventory_scopelowstock",
+      "app_models_inventory_inventory_scopeoutofstock",
+      "app_models_inventory_inventory_stocklogs",
+      "app_models_inventory_inventory_supplier",
+      "app_models_stocklog",
+      "app_models_stocklog_stocklog",
+      "app_models_stocklog_stocklog_inventory",
+      "app_services_inventoryservice",
+      "app_services_inventoryservice_inventoryservice",
+      "app_services_inventoryservice_inventoryservice_createwithstocklog",
+      "app_services_inventoryservice_inventoryservice_getcategories",
+      "app_services_inventoryservice_inventoryservice_getfiltered",
+      "app_services_inventoryservice_inventoryservice_updatestock"
+    ],
+    "2": [
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_construct",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_create",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_destroy",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_edit",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_index",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_show",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_store",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_update",
+      "app_http_requests_storesupplyrequest",
+      "app_http_requests_storesupplyrequest_storesupplyrequest",
+      "app_http_requests_storesupplyrequest_storesupplyrequest_authorize",
+      "app_http_requests_storesupplyrequest_storesupplyrequest_messages",
+      "app_http_requests_storesupplyrequest_storesupplyrequest_rules",
+      "app_models_supplyrequest_supplyrequest",
+      "app_models_supplyrequest_supplyrequest_approver",
+      "app_models_supplyrequest_supplyrequest_checker",
+      "app_models_supplyrequest_supplyrequest_issuer",
+      "app_models_supplyrequest_supplyrequest_noter",
+      "app_models_supplyrequest_supplyrequest_scopeapproved",
+      "app_models_supplyrequest_supplyrequest_scopebydepartment",
+      "app_models_supplyrequest_supplyrequest_scopepending",
+      "app_models_supplyrequest_supplyrequest_user",
+      "app_models_supplyrequest_supplyrequest_verifier",
+      "app_services_supplyrequestservice_supplyrequestservice",
+      "app_services_supplyrequestservice_supplyrequestservice_approvestep",
+      "app_services_supplyrequestservice_supplyrequestservice_getfiltered",
+      "app_services_supplyrequestservice_supplyrequestservice_getpendingforrole",
+      "app_services_supplyrequestservice_supplyrequestservice_rejectrequest",
+      "app_services_supplyrequestservice_supplyrequestservice_submitrequest"
+    ],
+    "3": [
+      "app_http_controllers_procurementcontroller",
+      "app_http_controllers_procurementcontroller_procurementcontroller",
+      "app_http_controllers_procurementcontroller_procurementcontroller_construct",
+      "app_http_controllers_procurementcontroller_procurementcontroller_create",
+      "app_http_controllers_procurementcontroller_procurementcontroller_destroy",
+      "app_http_controllers_procurementcontroller_procurementcontroller_edit",
+      "app_http_controllers_procurementcontroller_procurementcontroller_markreceived",
+      "app_http_controllers_procurementcontroller_procurementcontroller_show",
+      "app_http_controllers_procurementcontroller_procurementcontroller_store",
+      "app_http_controllers_procurementcontroller_procurementcontroller_update",
+      "app_models_inventory",
+      "app_models_notification",
+      "app_models_notification_notification",
+      "app_models_notification_notification_scopeunread",
+      "app_models_notification_notification_user",
+      "app_models_procurement",
+      "app_models_procurement_procurement",
+      "app_models_procurement_procurement_supplier",
+      "app_models_supplier",
+      "app_models_suppliertransaction",
+      "app_models_suppliertransaction_suppliertransaction",
+      "app_models_suppliertransaction_suppliertransaction_supplier",
+      "app_services_procurementservice",
+      "app_services_procurementservice_procurementservice",
+      "app_services_procurementservice_procurementservice_getfiltered",
+      "app_services_procurementservice_procurementservice_getstatushistory",
+      "illuminate_database_eloquent_model"
+    ],
+    "4": [
+      "app_http_controllers_suppliercontroller",
+      "app_http_controllers_suppliercontroller_suppliercontroller",
+      "app_http_controllers_suppliercontroller_suppliercontroller_construct",
+      "app_http_controllers_suppliercontroller_suppliercontroller_create",
+      "app_http_controllers_suppliercontroller_suppliercontroller_destroy",
+      "app_http_controllers_suppliercontroller_suppliercontroller_edit",
+      "app_http_controllers_suppliercontroller_suppliercontroller_show",
+      "app_http_controllers_suppliercontroller_suppliercontroller_store",
+      "app_http_controllers_suppliercontroller_suppliercontroller_update",
+      "app_http_requests_storesupplierrequest",
+      "app_http_requests_storesupplierrequest_storesupplierrequest",
+      "app_http_requests_storesupplierrequest_storesupplierrequest_authorize",
+      "app_http_requests_storesupplierrequest_storesupplierrequest_rules",
+      "app_http_requests_updatesupplierrequest",
+      "app_http_requests_updatesupplierrequest_updatesupplierrequest",
+      "app_http_requests_updatesupplierrequest_updatesupplierrequest_authorize",
+      "app_http_requests_updatesupplierrequest_updatesupplierrequest_rules",
+      "app_models_supplier_supplier",
+      "app_models_supplier_supplier_getfulladdressattribute",
+      "app_models_supplier_supplier_inventory",
+      "app_models_supplier_supplier_procurements",
+      "app_models_supplier_supplier_transactions",
+      "app_services_supplierservice",
+      "app_services_supplierservice_supplierservice",
+      "app_services_supplierservice_supplierservice_getfiltered",
+      "app_services_supplierservice_supplierservice_getsupplierstats",
+      "illuminate_database_eloquent_builder"
+    ],
+    "5": [
+      "composer_scripts",
+      "composer_scripts_dev",
+      "composer_scripts_post_autoload_dump",
+      "composer_scripts_post_create_project_cmd",
+      "composer_scripts_post_root_package_install",
+      "composer_scripts_post_update_cmd",
+      "composer_scripts_pre_package_uninstall",
+      "composer_scripts_setup",
+      "composer_scripts_test",
+      "ref_composer_config_disableprocesstimeout",
+      "ref_composer_install",
+      "ref_illuminate_foundation_composerscripts_postautoloaddump",
+      "ref_illuminate_foundation_composerscripts_prepackageuninstall",
+      "ref_npm_install",
+      "ref_npm_run_build",
+      "ref_npx_concurrently_c_93c5fd_c4b5fd_fb7185_fdba74_php_artisan_serve_php_artisan_queue_listen_tries_1_timeout_0_php_artisan_pail_timeout_0_npm_run_dev_names_server_queue_logs_vite_kill_others",
+      "ref_php_artisan_config_clear_ansi",
+      "ref_php_artisan_key_generate",
+      "ref_php_artisan_key_generate_ansi",
+      "ref_php_artisan_migrate_force",
+      "ref_php_artisan_migrate_graceful_ansi",
+      "ref_php_artisan_package_discover_ansi",
+      "ref_php_artisan_test",
+      "ref_php_artisan_vendor_publish_tag_laravel_assets_ansi_force",
+      "ref_php_r_file_exists_database_database_sqlite_touch_database_database_sqlite",
+      "ref_php_r_file_exists_env_copy_env_example_env"
+    ],
+    "6": [
+      "alpinejs",
+      "axios",
+      "concurrently",
+      "laravel_vite_plugin",
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_alpinejs",
+      "package_devdependencies_axios",
+      "package_devdependencies_concurrently",
+      "package_devdependencies_laravel_vite_plugin",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_tailwindcss_vite",
+      "package_devdependencies_vite",
+      "package_private",
+      "package_schema",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_type",
+      "tailwindcss",
+      "tailwindcss_vite",
+      "vite"
+    ],
+    "7": [
+      "app_http_controllers_auth_logincontroller",
+      "app_http_controllers_auth_logincontroller_logincontroller",
+      "app_http_controllers_auth_logincontroller_logincontroller_create",
+      "app_http_controllers_auth_logoutcontroller",
+      "app_http_controllers_auth_logoutcontroller_logoutcontroller",
+      "app_http_controllers_auth_logoutcontroller_logoutcontroller_destroy",
+      "app_http_controllers_controller",
+      "app_http_controllers_controller_controller",
+      "app_http_controllers_dashboardcontroller",
+      "app_http_controllers_dashboardcontroller_dashboardcontroller",
+      "app_http_controllers_dashboardcontroller_dashboardcontroller_construct",
+      "app_http_controllers_dashboardcontroller_dashboardcontroller_index",
+      "app_http_controllers_supplyrequestcontroller",
+      "app_models_supplyrequest",
+      "app_services_dashboardservice",
+      "app_services_dashboardservice_dashboardservice",
+      "app_services_dashboardservice_dashboardservice_getrecentnotifications",
+      "app_services_dashboardservice_dashboardservice_getstats",
+      "app_services_supplyrequestservice",
+      "config_auth",
+      "routes_web"
+    ],
+    "8": [
+      "app_models_user",
+      "app_models_user_user",
+      "app_models_user_user_casts",
+      "app_models_user_user_getdisplaynameattribute",
+      "app_models_user_user_getfullnameattribute",
+      "database_factories_userfactory",
+      "database_factories_userfactory_userfactory",
+      "database_factories_userfactory_userfactory_definition",
+      "database_factories_userfactory_userfactory_unverified",
+      "database_seeders_databaseseeder",
+      "database_seeders_databaseseeder_databaseseeder",
+      "database_seeders_databaseseeder_databaseseeder_run",
+      "illuminate_database_console_seeds_withoutmodelevents",
+      "illuminate_database_eloquent_factories_factory",
+      "illuminate_database_seeder",
+      "illuminate_foundation_auth_user",
+      "illuminate_notifications_notifiable",
+      "static"
+    ],
+    "9": [
+      "app_http_controllers_auth_logincontroller_logincontroller_store",
+      "app_http_controllers_inventorycontroller_inventorycontroller_store",
+      "app_http_requests_loginrequest",
+      "app_http_requests_loginrequest_loginrequest",
+      "app_http_requests_loginrequest_loginrequest_authorize",
+      "app_http_requests_loginrequest_loginrequest_rules",
+      "app_http_requests_storeinventoryrequest",
+      "app_http_requests_storeinventoryrequest_storeinventoryrequest",
+      "app_http_requests_storeinventoryrequest_storeinventoryrequest_authorize",
+      "app_http_requests_storeinventoryrequest_storeinventoryrequest_rules",
+      "app_http_requests_storeprocurementrequest",
+      "app_http_requests_storeprocurementrequest_storeprocurementrequest",
+      "app_http_requests_storeprocurementrequest_storeprocurementrequest_authorize",
+      "app_http_requests_storeprocurementrequest_storeprocurementrequest_rules",
+      "illuminate_foundation_http_formrequest"
+    ],
+    "10": [
+      "app_http_controllers_procurementcontroller_procurementcontroller_index",
+      "app_http_controllers_suppliercontroller_suppliercontroller_index",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_approve",
+      "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller_reject",
+      "app_http_middleware_adminmiddleware",
+      "app_http_middleware_adminmiddleware_adminmiddleware",
+      "app_http_middleware_adminmiddleware_adminmiddleware_handle",
+      "app_http_middleware_rolemiddleware",
+      "app_http_middleware_rolemiddleware_rolemiddleware",
+      "app_http_middleware_rolemiddleware_rolemiddleware_handle",
+      "closure",
+      "illuminate_http_request",
+      "symfony_component_httpfoundation_response"
+    ],
+    "11": [
+      "app_providers_appserviceprovider",
+      "app_providers_appserviceprovider_appserviceprovider",
+      "app_providers_appserviceprovider_appserviceprovider_boot",
+      "app_providers_appserviceprovider_appserviceprovider_register",
+      "bootstrap_providers",
+      "illuminate_support_serviceprovider"
+    ],
+    "12": [
+      "illuminate_foundation_testing_testcase",
+      "tests_feature_exampletest",
+      "tests_feature_exampletest_exampletest",
+      "tests_feature_exampletest_exampletest_test_the_application_returns_a_successful_response",
+      "tests_testcase",
+      "tests_testcase_testcase"
+    ],
+    "13": [
+      "phpunit_framework_testcase",
+      "tests_unit_exampletest",
+      "tests_unit_exampletest_exampletest",
+      "tests_unit_exampletest_exampletest_test_that_true_is_true"
+    ],
+    "14": [
+      "components_navbar",
+      "components_sidebar",
+      "resources_views_layouts_app_blade"
+    ],
+    "15": [
+      "database_migrations_0001_01_01_000000_create_users_table",
+      "database_migrations_0001_01_01_000000_create_users_table_down",
+      "database_migrations_0001_01_01_000000_create_users_table_up"
+    ],
+    "16": [
+      "database_migrations_0001_01_01_000001_create_cache_table",
+      "database_migrations_0001_01_01_000001_create_cache_table_down",
+      "database_migrations_0001_01_01_000001_create_cache_table_up"
+    ],
+    "17": [
+      "database_migrations_0001_01_01_000002_create_jobs_table",
+      "database_migrations_0001_01_01_000002_create_jobs_table_down",
+      "database_migrations_0001_01_01_000002_create_jobs_table_up"
+    ],
+    "18": [
+      "artisan",
+      "routes_console"
+    ],
+    "19": [
+      "resources_js_app",
+      "resources_js_bootstrap"
+    ],
+    "20": [
+      "bootstrap_app"
+    ],
+    "21": [
+      "config_app"
+    ],
+    "22": [
+      "config_cache"
+    ],
+    "23": [
+      "config_database"
+    ],
+    "24": [
+      "config_filesystems"
+    ],
+    "25": [
+      "config_logging"
+    ],
+    "26": [
+      "config_mail"
+    ],
+    "27": [
+      "config_queue"
+    ],
+    "28": [
+      "config_services"
+    ],
+    "29": [
+      "config_session"
+    ],
+    "30": [
+      "graphify_build"
+    ],
+    "31": [
+      "graphify_detect"
+    ],
+    "32": [
+      "public_index"
+    ],
+    "33": [
+      "resources_views_auth_login_blade"
+    ],
+    "34": [
+      "resources_views_components_alert_blade"
+    ],
+    "35": [
+      "resources_views_components_badge_blade"
+    ],
+    "36": [
+      "resources_views_components_dashboard_stat_blade"
+    ],
+    "37": [
+      "resources_views_components_data_table_blade"
+    ],
+    "38": [
+      "resources_views_components_navbar_blade"
+    ],
+    "39": [
+      "resources_views_components_sidebar_blade"
+    ],
+    "40": [
+      "resources_views_dashboard_index_blade"
+    ],
+    "41": [
+      "resources_views_errors_403_blade"
+    ],
+    "42": [
+      "resources_views_inventory_create_blade"
+    ],
+    "43": [
+      "resources_views_inventory_edit_blade"
+    ],
+    "44": [
+      "resources_views_inventory_index_blade"
+    ],
+    "45": [
+      "resources_views_inventory_show_blade"
+    ],
+    "46": [
+      "resources_views_inventory_test_blade"
+    ],
+    "47": [
+      "resources_views_procurement_create_blade"
+    ],
+    "48": [
+      "resources_views_procurement_edit_blade"
+    ],
+    "49": [
+      "resources_views_procurement_index_blade"
+    ],
+    "50": [
+      "resources_views_procurement_show_blade"
+    ],
+    "51": [
+      "resources_views_suppliers_create_blade"
+    ],
+    "52": [
+      "resources_views_suppliers_edit_blade"
+    ],
+    "53": [
+      "resources_views_suppliers_index_blade"
+    ],
+    "54": [
+      "resources_views_suppliers_show_blade"
+    ],
+    "55": [
+      "resources_views_supply_requests_create_blade"
+    ],
+    "56": [
+      "resources_views_supply_requests_edit_blade"
+    ],
+    "57": [
+      "resources_views_supply_requests_index_blade"
+    ],
+    "58": [
+      "resources_views_supply_requests_show_blade"
+    ],
+    "59": [
+      "resources_views_welcome_blade"
+    ],
+    "60": [
+      "vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.04878048780487805,
+    "1": 0.0967741935483871,
+    "2": 0.10344827586206896,
+    "3": 0.1168091168091168,
+    "4": 0.10541310541310542,
+    "5": 0.08,
+    "6": 0.09090909090909091,
+    "7": 0.14761904761904762,
+    "8": 0.1503267973856209,
+    "9": 0.1619047619047619,
+    "10": 0.2564102564102564,
+    "11": 0.4,
+    "12": 0.4,
+    "13": 0.6666666666666666,
+    "14": 0.6666666666666666,
+    "15": 0.6666666666666666,
+    "16": 0.6666666666666666,
+    "17": 0.6666666666666666,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0
+  },
+  "gods": [
+    {
+      "id": "app_models_inventory_inventory",
+      "label": "Inventory",
+      "degree": 23
+    },
+    {
+      "id": "app_models_supplyrequest_supplyrequest",
+      "label": "SupplyRequest",
+      "degree": 23
+    },
+    {
+      "id": "app_models_supplier_supplier",
+      "label": "Supplier",
+      "degree": 18
+    },
+    {
+      "id": "app_models_procurement_procurement",
+      "label": "Procurement",
+      "degree": 15
+    },
+    {
+      "id": "app_http_controllers_supplyrequestcontroller_supplyrequestcontroller",
+      "label": "SupplyRequestController",
+      "degree": 13
+    },
+    {
+      "id": "app_http_controllers_inventorycontroller_inventorycontroller",
+      "label": "InventoryController",
+      "degree": 12
+    },
+    {
+      "id": "app_http_controllers_procurementcontroller_procurementcontroller",
+      "label": "ProcurementController",
+      "degree": 12
+    },
+    {
+      "id": "app_http_controllers_suppliercontroller_suppliercontroller",
+      "label": "SupplierController",
+      "degree": 11
+    },
+    {
+      "id": "app_http_controllers_controller_controller",
+      "label": "Controller",
+      "degree": 10
+    },
+    {
+      "id": "app_services_supplyrequestservice_supplyrequestservice",
+      "label": "SupplyRequestService",
+      "degree": 9
+    }
+  ],
+  "surprises": [
+    {
+      "source": "InventoryController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/InventoryController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "ProcurementController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/ProcurementController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "SupplierController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/SupplierController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "SupplyRequestController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/SupplyRequestController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "LoginController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/Auth/LoginController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "cross-file semantic connection"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `SupplyRequest` connect `SupplyRequest` to `Illuminate\\Http\\Request`, `Procurement`, `Controller`?",
+      "why": "High betweenness centrality (0.045) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Inventory` connect `Inventory` to `Procurement`, `Controller`?",
+      "why": "High betweenness centrality (0.045) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Controller` connect `Controller` to `Inventory`, `SupplyRequest`, `Procurement`, `Supplier`?",
+      "why": "High betweenness centrality (0.034) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 12 inferred relationships involving `SupplyRequest` (e.g. with `.approve()` and `.destroy()`) actually correct?",
+      "why": "`SupplyRequest` has 12 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 12 inferred relationships involving `Supplier` (e.g. with `.create()` and `.edit()`) actually correct?",
+      "why": "`Supplier` has 12 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `$schema`, `name`, `type` to the rest of the system?",
+      "why": "59 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `composer.json` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

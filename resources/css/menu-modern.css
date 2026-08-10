@@ -1,0 +1,42 @@
+.menu-card {
+    background: linear-gradient(180deg, #ffffff 0%, #eefcf8 100%);
+    border-color: #254f4a;
+}
+
+.menu-card-title {
+    color: #1f2a37 !important;
+}
+
+.menu-card-copy {
+    color: #51616d !important;
+}
+
+.menu-card-icon {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #066d59 0%, #0f766e 100%) !important;
+    border: 1px solid #a7f3d0;
+}
+
+.menu-open-badge {
+    background: #d1fae5 !important;
+    color: #047857 !important;
+}
+
+.menu-access-button {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important;
+    border: 1px solid #065f46;
+    font-weight: 700;
+}
+
+.menu-access-button i {
+    color: #ffffff !important;
+}
+
+.menu-card a {
+    text-decoration: none;
+}
+
+.menu-card a:hover .menu-card-title {
+    color: #0f766e !important;
+}
