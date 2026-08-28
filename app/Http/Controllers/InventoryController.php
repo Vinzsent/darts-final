@@ -16,6 +16,19 @@ class InventoryController extends Controller
         protected InventoryService $inventoryService
     ) {}
 
+    private function generateQrcode(array $data): string
+    {
+        $payload = [
+            'type'     => 'INVENTORY_ITEM',
+            'name'     => $data['item_name'] ?? '',
+            'category' => $data['category'] ?? '',
+            'brand'    => $data['brand'] ?? '',
+            'sku'      => 'INV-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 8)),
+        ];
+
+        return json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
     public function index(Request $request)
     {
         $search = $request->get('search');
@@ -36,7 +49,14 @@ class InventoryController extends Controller
 
     public function store(StoreInventoryRequest $request)
     {
-        $item = $this->inventoryService->createWithStockLog($request->validated());
+        $data = $request->validated();
+
+        // Automatic mode (or manual left empty): generate a QR code server-side
+        if ($request->input('qrcode_mode') !== 'manual' || empty($data['qrcode'])) {
+            $data['qrcode'] = $this->generateQrcode($data);
+        }
+
+        $item = $this->inventoryService->createWithStockLog($data);
 
         return redirect()->route('inventory.index')
             ->with('success', "Inventory item '{$item->item_name}' created successfully.");
