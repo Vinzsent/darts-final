@@ -15,6 +15,8 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PersonnelController;
 
 // Guest routes
 Route::middleware('guest')->group(function () {
@@ -28,6 +30,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
     Route::post('/menu/settings/unlock', [MenuController::class, 'settingsUnlock'])->name('menu.settings.unlock');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -43,6 +50,7 @@ Route::middleware('auth')->group(function () {
 
     // Procurement
     Route::resource('procurement', ProcurementController::class);
+    Route::get('/assignment-issuance', [ProcurementController::class, 'index'])->name('assignment-issuance.index');
     Route::post('/procurement/{id}/receive', [ProcurementController::class, 'markReceived'])->name('procurement.receive');
 
     // Notifications
@@ -61,6 +69,8 @@ Route::middleware('auth')->group(function () {
 
     // Canvass
     Route::resource('canvass', CanvassController::class);
+    Route::get('/canvass/{id}/edit-data', [CanvassController::class, 'editData'])->name('canvass.edit-data');
+    Route::get('/canvass/{id}/view-data', [CanvassController::class, 'viewData'])->name('canvass.view-data');
 
     // Purchase Orders
     Route::resource('purchase-orders', PurchaseOrderController::class);
@@ -68,6 +78,14 @@ Route::middleware('auth')->group(function () {
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
+    // Personnel
+    Route::middleware('role:admin,property-custodian,supply-in-charge')->group(function () {
+        Route::get('/personnel', [PersonnelController::class, 'index'])->name('personnel.index');
+        Route::get('/personnel/{id}', [PersonnelController::class, 'show'])->name('personnel.show');
+        Route::post('/personnel/{id}/check-in', [PersonnelController::class, 'checkIn'])->name('personnel.checkIn');
+    });
+
     // Property
     Route::resource('property', PropertyController::class);
+    Route::post('/property/{id}/stock-adjust', [PropertyController::class, 'stockAdjust'])->name('property.stock-adjust');
 });

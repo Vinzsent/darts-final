@@ -10,23 +10,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/menu-modern.css') }}">
 </head>
-<body class="h-full antialiased" x-data="{ sidebarOpen: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true', darkMode: false }">
-    <div class="min-h-screen flex">
-        {{-- Sidebar --}}
-        @include('components.sidebar')
+<body class="h-full antialiased bg-slate-100" x-data="{
+        darkMode: false,
+        sidebarOpen: false,
+        sidebarCollapsed: false
+    }">
+    @if(!request()->routeIs('menu.index'))
+        <div class="min-h-screen flex">
+            @include('components.sidebar')
 
-        {{-- Overlay for mobile --}}
-        <div x-show="sidebarOpen" @@click="sidebarOpen = false" class="fixed inset-0 z-20 bg-black/50 lg:hidden" style="display: none;"></div>
+            <div class="flex min-w-0 flex-1 flex-col transition-all duration-200">
+                @include('components.navbar')
 
-        {{-- Main Content --}}
-        <div class="flex-1 flex flex-col"
-             :class="sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-64'">
-            {{-- Navbar --}}
-            @include('components.navbar')
+                <main class="flex-1 p-4 sm:p-6 lg:p-8">
+                    {{-- Flash Messages --}}
+                    @if(session('success'))
+                        <div class="mb-4 bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-r-lg shadow-sm" role="alert">
+                            <p>{{ session('success') }}</p>
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="mb-4 bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-r-lg shadow-sm" role="alert">
+                            <p>{{ session('error') }}</p>
+                        </div>
+                    @endif
 
-            {{-- Page Content --}}
+                    @yield('content')
+                </main>
+
+                <footer class="border-t border-gray-200 bg-white px-6 py-3 text-center text-sm text-gray-500">
+                    &copy; {{ date('Y') }} DCC Asset & Records Tracking System. All rights reserved.
+                </footer>
+            </div>
+        </div>
+    @else
+        <div class="min-h-screen flex flex-col">
             <main class="flex-1 p-4 sm:p-6 lg:p-8">
-                {{-- Flash Messages --}}
                 @if(session('success'))
                     <div class="mb-4 bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-r-lg shadow-sm" role="alert">
                         <p>{{ session('success') }}</p>
@@ -41,12 +60,11 @@
                 @yield('content')
             </main>
 
-            {{-- Footer --}}
             <footer class="border-t border-gray-200 bg-white px-6 py-3 text-center text-sm text-gray-500">
                 &copy; {{ date('Y') }} DCC Asset & Records Tracking System. All rights reserved.
             </footer>
         </div>
-    </div>
+    @endif
 
     {{-- Toast Container --}}
     <div x-data="toastHandler()" @@notify.window="add($event.detail)" class="fixed bottom-4 right-4 z-50 space-y-2">

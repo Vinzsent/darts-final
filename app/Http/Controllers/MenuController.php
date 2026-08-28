@@ -26,8 +26,7 @@ class MenuController extends Controller
                 ->with('settings_error', 'Invalid password. Access denied.');
         }
 
-        return redirect()->route('menu.index')
-            ->with('settings_unlocked', true)
-            ->with('success', 'System settings unlocked.');
+        return redirect()->route('users.index')
+            ->with('success', 'System settings unlocked. Manage users below.');
     }
 }

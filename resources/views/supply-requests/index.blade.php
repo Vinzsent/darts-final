@@ -71,12 +71,12 @@
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="px-4 py-2 bg-gray-700 text-white text-sm rounded-lg hover:bg-gray-800 transition">
+                <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition">
                     <i class="fa-solid fa-filter mr-1"></i> Filter
                 </button>
                 @if($search || $department)
                     <a href="{{ route('supply-requests.index', ['status' => $status]) }}"
-                       class="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300 transition">
+                       class="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-red-200 transition">
                         <i class="fa-solid fa-times mr-1"></i> Clear
                     </a>
                 @endif

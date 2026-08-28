@@ -34,9 +34,12 @@
                         <p class="text-sm font-medium text-gray-900">{{ Auth::user()->display_name }}</p>
                         <p class="text-xs text-gray-500">{{ Auth::user()->user_type }}</p>
                     </div>
+                    <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                        <i class="fa-solid fa-user-circle mr-2 text-emerald-600"></i> My Profile
+                    </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition border-t border-gray-100">
                             <i class="fa-solid fa-sign-out-alt mr-2"></i> Sign Out
                         </button>
                     </form>

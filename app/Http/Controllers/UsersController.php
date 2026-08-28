@@ -23,9 +23,24 @@ class UsersController extends Controller
         return count($types) > 0 ? $types : ['Admin'];
     }
 
+    public static function positions(): array
+    {
+        $positions = User::query()
+            ->distinct()
+            ->whereNotNull('position')
+            ->where('position', '!=', '')
+            ->pluck('position')
+            ->values()
+            ->all();
+
+        return count($positions) > 0 ? $positions : ['Admin', 'College Instructor', 'Staff'];
+    }
+
     public function index(Request $request)
     {
         $search = $request->get('search');
+        $status = $request->get('status');
+        $position = $request->get('position');
 
         $users = User::query()
             ->when($search, function ($query, $search) {
@@ -36,10 +51,13 @@ class UsersController extends Controller
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
+            ->when($status, fn($query) => $query->where('status', strtoupper($status)))
+            ->when($position, fn($query) => $query->where('position', $position))
             ->orderBy('last_name')
-            ->paginate(15);
+            ->paginate(10)
+            ->withQueryString();
 
-        return view('users.index', compact('users', 'search'));
+        return view('users.index', compact('users', 'search', 'status', 'position'));
     }
 
     public function create()

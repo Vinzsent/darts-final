@@ -68,10 +68,12 @@
                             </dd>
                         </div>
                         <div>
-                            <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status</dt>
+                            <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Position</dt>
                             <dd class="mt-1">
-                                @if($user->status)
-                                    <x-badge :type="strtoupper($user->status) === 'ACTIVE' ? 'success' : 'danger'">{{ $user->status }}</x-badge>
+                                @if($user->position)
+                                    <span class="px-2 py-1 bg-green-100 text-green-900 rounded-lg text-xs">
+                                        {{ $user->position }}
+                                    </span>
                                 @else
                                     <span class="text-xs text-gray-400">--</span>
                                 @endif
@@ -98,6 +100,16 @@
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Password</dt>
                             <dd class="mt-1 text-sm text-gray-400">••••••••</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Account Status</dt>
+                            <dd class="mt-1">
+                                @if($user->status)
+                                    <x-badge :type="strtoupper($user->status) === 'ACTIVE' ? 'success' : 'danger'">{{ $user->status }}</x-badge>
+                                @else
+                                    <span class="text-sm text-gray-400">--</span>
+                                @endif
+                            </dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Account Created</dt>

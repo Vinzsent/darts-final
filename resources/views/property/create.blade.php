@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Add Inventory Item - DARTS')
-@section('page-title', 'Add Inventory Item')
+@section('title', 'Add Property Item - DARTS')
+@section('page-title', 'Add Property Item')
 
 @section('content')
 <div class="max-w-3xl mx-auto">
     <div class="bg-white rounded-xl shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-boxes-stacked text-emerald-600"></i>
-                <h3 class="text-lg font-semibold text-gray-900">Item Information</h3>
+                <i class="fa-solid fa-couch text-emerald-600"></i>
+                <h3 class="text-lg font-semibold text-gray-900">Property Information</h3>
             </div>
         </div>
 
-        <form action="{{ route('inventory.store') }}" method="POST" class="p-6 space-y-6">
+        <form action="{{ route('property.store') }}" method="POST" class="p-6 space-y-6">
             @csrf
 
             {{-- Row: Item Name + Category --}}
@@ -63,36 +63,28 @@
                           class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('description') }}</textarea>
             </div>
 
-            {{-- QR Code --}}
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm">
-                            <i class="fa-solid fa-qrcode"></i>
-                        </span>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-800" for="qrcode">QR Code</label>
-                            <p class="text-xs text-gray-500">Scannable code carrying the item's full information.</p>
-                        </div>
-                    </div>
-                    <div class="inline-flex rounded-lg border border-gray-300 bg-white overflow-hidden text-xs font-semibold shrink-0" role="group">
-                        <button type="button" id="qrAutoBtn" onclick="setQrMode('auto')"
+            {{-- Barcode --}}
+            <div>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-1">
+                    <label class="block text-sm font-medium text-gray-700" for="barcode">Barcode</label>
+                    <div class="inline-flex rounded-lg border border-gray-300 overflow-hidden text-xs font-semibold" role="group">
+                        <button type="button" id="barcodeAutoBtn" onclick="setBarcodeMode('auto')"
                                 class="px-3 py-1.5 bg-emerald-600 text-white transition focus:outline-none">
                             <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Automatic
                         </button>
-                        <button type="button" id="qrManualBtn" onclick="setQrMode('manual')"
+                        <button type="button" id="barcodeManualBtn" onclick="setBarcodeMode('manual')"
                                 class="px-3 py-1.5 bg-white text-gray-600 hover:bg-gray-50 transition focus:outline-none">
                             <i class="fa-solid fa-keyboard mr-1"></i>Manual
                         </button>
                     </div>
                 </div>
-                <input type="hidden" name="qrcode_mode" id="qrMode" value="auto">
-                <input type="text" name="qrcode" id="qrInput" value="{{ old('qrcode') }}"
-                       placeholder="Auto-generated on save from item details"
+                <input type="hidden" name="barcode_mode" id="barcodeMode" value="auto">
+                <input type="text" name="barcode" id="barcodeInput" value="{{ old('barcode') }}"
+                       placeholder="Auto-generated on save (e.g., PRP-20260827-XXXX)"
                        disabled
-                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed font-mono focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('qrcode') border-red-500 @enderror">
-                <p id="qrHint" class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-circle-info mr-1"></i>System will generate a QR code containing the item's details automatically.</p>
-                @error('qrcode') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed font-mono focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('barcode') border-red-500 @enderror">
+                <p id="barcodeHint" class="text-xs text-gray-400 mt-1">System will generate a unique barcode automatically.</p>
+                @error('barcode') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <hr class="border-gray-200">
@@ -176,11 +168,11 @@
 
             {{-- Actions --}}
             <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
-                <a href="{{ route('inventory.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                <a href="{{ route('property.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
                     Cancel
                 </a>
                 <button type="submit" class="px-6 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition shadow-sm">
-                    <i class="fa-solid fa-floppy-disk mr-2"></i> Save Item
+                    <i class="fa-solid fa-floppy-disk mr-2"></i> Save Property
                 </button>
             </div>
         </form>
@@ -189,12 +181,12 @@
 
 @push('scripts')
 <script>
-    function setQrMode(mode) {
-        const input = document.getElementById('qrInput');
-        const modeInput = document.getElementById('qrMode');
-        const hint = document.getElementById('qrHint');
-        const autoBtn = document.getElementById('qrAutoBtn');
-        const manualBtn = document.getElementById('qrManualBtn');
+    function setBarcodeMode(mode) {
+        const input = document.getElementById('barcodeInput');
+        const modeInput = document.getElementById('barcodeMode');
+        const hint = document.getElementById('barcodeHint');
+        const autoBtn = document.getElementById('barcodeAutoBtn');
+        const manualBtn = document.getElementById('barcodeManualBtn');
         if (!input || !modeInput) return;
 
         modeInput.value = mode;
@@ -216,9 +208,9 @@
         manualBtn.classList.toggle('bg-white', isAuto);
         manualBtn.classList.toggle('text-gray-600', isAuto);
 
-        hint.innerHTML = isAuto
-            ? '<i class="fa-solid fa-circle-info mr-1"></i>System will generate a QR code containing the item\'s details automatically.'
-            : '<i class="fa-solid fa-pen mr-1"></i>Enter a valid QR payload manually. It should carry the item\'s information.';
+        hint.textContent = isAuto
+            ? 'System will generate a unique barcode automatically.'
+            : 'Enter the barcode manually. It must be unique.';
         hint.classList.toggle('text-gray-400', isAuto);
         hint.classList.toggle('text-emerald-600', !isAuto);
         if (!isAuto) input.focus();

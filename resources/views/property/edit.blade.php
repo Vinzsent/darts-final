@@ -1,32 +1,33 @@
 @extends('layouts.app')
 
-@section('title', 'Add Inventory Item - DARTS')
-@section('page-title', 'Add Inventory Item')
+@section('title', 'Edit Property Item - DARTS')
+@section('page-title', 'Edit Property Item')
 
 @section('content')
 <div class="max-w-3xl mx-auto">
     <div class="bg-white rounded-xl shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-boxes-stacked text-emerald-600"></i>
-                <h3 class="text-lg font-semibold text-gray-900">Item Information</h3>
+                <i class="fa-solid fa-pen-to-square text-amber-600"></i>
+                <h3 class="text-lg font-semibold text-gray-900">Edit: {{ $property->item_name }}</h3>
             </div>
         </div>
 
-        <form action="{{ route('inventory.store') }}" method="POST" class="p-6 space-y-6">
+        <form action="{{ route('property.update', $property->inventory_id) }}" method="POST" class="p-6 space-y-6">
             @csrf
+            @method('PUT')
 
             {{-- Row: Item Name + Category --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Item Name <span class="text-red-500">*</span></label>
-                    <input type="text" name="item_name" value="{{ old('item_name') }}" required
+                    <input type="text" name="item_name" value="{{ old('item_name', $property->item_name) }}" required
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('item_name') border-red-500 @enderror">
                     @error('item_name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Category <span class="text-red-500">*</span></label>
-                    <input type="text" name="category" value="{{ old('category') }}" required
+                    <input type="text" name="category" value="{{ old('category', $property->category) }}" required
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('category') border-red-500 @enderror">
                     @error('category') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
@@ -36,22 +37,22 @@
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
-                    <input type="text" name="brand" value="{{ old('brand') }}"
+                    <input type="text" name="brand" value="{{ old('brand', $property->brand) }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                    <input type="text" name="type" value="{{ old('type') }}"
+                    <input type="text" name="type" value="{{ old('type', $property->type) }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
-                    <input type="text" name="color" value="{{ old('color') }}"
+                    <input type="text" name="color" value="{{ old('color', $property->color) }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Size</label>
-                    <input type="text" name="size" value="{{ old('size') }}"
+                    <input type="text" name="size" value="{{ old('size', $property->size) }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
             </div>
@@ -60,39 +61,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea name="description" rows="3"
-                          class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('description') }}</textarea>
-            </div>
-
-            {{-- QR Code --}}
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm">
-                            <i class="fa-solid fa-qrcode"></i>
-                        </span>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-800" for="qrcode">QR Code</label>
-                            <p class="text-xs text-gray-500">Scannable code carrying the item's full information.</p>
-                        </div>
-                    </div>
-                    <div class="inline-flex rounded-lg border border-gray-300 bg-white overflow-hidden text-xs font-semibold shrink-0" role="group">
-                        <button type="button" id="qrAutoBtn" onclick="setQrMode('auto')"
-                                class="px-3 py-1.5 bg-emerald-600 text-white transition focus:outline-none">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Automatic
-                        </button>
-                        <button type="button" id="qrManualBtn" onclick="setQrMode('manual')"
-                                class="px-3 py-1.5 bg-white text-gray-600 hover:bg-gray-50 transition focus:outline-none">
-                            <i class="fa-solid fa-keyboard mr-1"></i>Manual
-                        </button>
-                    </div>
-                </div>
-                <input type="hidden" name="qrcode_mode" id="qrMode" value="auto">
-                <input type="text" name="qrcode" id="qrInput" value="{{ old('qrcode') }}"
-                       placeholder="Auto-generated on save from item details"
-                       disabled
-                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-100 text-gray-500 cursor-not-allowed font-mono focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('qrcode') border-red-500 @enderror">
-                <p id="qrHint" class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-circle-info mr-1"></i>System will generate a QR code containing the item's details automatically.</p>
-                @error('qrcode') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('description', $property->description) }}</textarea>
             </div>
 
             <hr class="border-gray-200">
@@ -101,23 +70,24 @@
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Current Stock</label>
-                    <input type="number" name="current_stock" value="{{ old('current_stock', 0) }}" min="0" step="any"
+                    <input type="number" name="current_stock" value="{{ old('current_stock', $property->current_stock) }}" min="0" step="any"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                    <input type="number" name="quantity" value="{{ old('quantity', 0) }}" min="0" step="any"
+                    <input type="number" name="quantity" value="{{ old('quantity', $property->quantity) }}" min="0" step="any"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
-                    <input type="text" name="unit" value="{{ old('unit') }}" placeholder="pcs, kg, box..."
+                    <input type="text" name="unit" value="{{ old('unit', $property->unit) }}" placeholder="pcs, kg, box..."
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Unit Cost</label>
                     <div class="relative">
-                        <input type="number" name="unit_cost" value="{{ old('unit_cost') }}" min="0" step="0.01"
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">&#8369;</span>
+                        <input type="number" name="unit_cost" value="{{ old('unit_cost', $property->unit_cost) }}" min="0" step="0.01"
                                class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
                 </div>
@@ -131,7 +101,7 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                         <option value="">-- Select Supplier --</option>
                         @foreach($suppliers as $supplier)
-                            <option value="{{ $supplier->supplier_id }}" {{ old('supplier_id') == $supplier->supplier_id ? 'selected' : '' }}>
+                            <option value="{{ $supplier->supplier_id }}" {{ old('supplier_id', $property->supplier_id) == $supplier->supplier_id ? 'selected' : '' }}>
                                 {{ $supplier->supplier_name }}
                             </option>
                         @endforeach
@@ -139,12 +109,12 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                    <input type="text" name="location" value="{{ old('location') }}"
+                    <input type="text" name="location" value="{{ old('location', $property->location) }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Receiver</label>
-                    <input type="text" name="receiver" value="{{ old('receiver') }}"
+                    <input type="text" name="receiver" value="{{ old('receiver', $property->receiver) }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
             </div>
@@ -155,74 +125,35 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                     <select name="status"
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        <option value="Active" {{ old('status', 'Active') == 'Active' ? 'selected' : '' }}>Active</option>
-                        <option value="Inactive" {{ old('status') == 'Inactive' ? 'selected' : '' }}>Inactive</option>
-                        <option value="Discontinued" {{ old('status') == 'Discontinued' ? 'selected' : '' }}>Discontinued</option>
+                        <option value="Active" {{ old('status', $property->status) == 'Active' ? 'selected' : '' }}>Active</option>
+                        <option value="Inactive" {{ old('status', $property->status) == 'Inactive' ? 'selected' : '' }}>Inactive</option>
+                        <option value="Discontinued" {{ old('status', $property->status) == 'Discontinued' ? 'selected' : '' }}>Discontinued</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Reorder Level</label>
-                    <input type="number" name="reorder_level" value="{{ old('reorder_level', 0) }}" min="0"
+                    <input type="number" name="reorder_level" value="{{ old('reorder_level', $property->reorder_level) }}" min="0"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
             </div>
 
             {{-- Received Notes --}}
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Received Notes</label>
                 <textarea name="received_notes" rows="2"
-                          class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('received_notes') }}</textarea>
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">{{ old('received_notes', $property->received_notes) }}</textarea>
             </div>
 
             {{-- Actions --}}
             <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
-                <a href="{{ route('inventory.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                <a href="{{ route('property.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
                     Cancel
                 </a>
                 <button type="submit" class="px-6 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition shadow-sm">
-                    <i class="fa-solid fa-floppy-disk mr-2"></i> Save Item
+                    <i class="fa-solid fa-floppy-disk mr-2"></i> Update Property
                 </button>
             </div>
         </form>
     </div>
 </div>
-
-@push('scripts')
-<script>
-    function setQrMode(mode) {
-        const input = document.getElementById('qrInput');
-        const modeInput = document.getElementById('qrMode');
-        const hint = document.getElementById('qrHint');
-        const autoBtn = document.getElementById('qrAutoBtn');
-        const manualBtn = document.getElementById('qrManualBtn');
-        if (!input || !modeInput) return;
-
-        modeInput.value = mode;
-        const isAuto = mode === 'auto';
-
-        input.disabled = isAuto;
-        input.classList.toggle('bg-gray-100', isAuto);
-        input.classList.toggle('text-gray-500', isAuto);
-        input.classList.toggle('cursor-not-allowed', isAuto);
-        if (isAuto) { input.value = ''; }
-
-        autoBtn.classList.toggle('bg-emerald-600', isAuto);
-        autoBtn.classList.toggle('text-white', isAuto);
-        autoBtn.classList.toggle('bg-white', !isAuto);
-        autoBtn.classList.toggle('text-gray-600', !isAuto);
-
-        manualBtn.classList.toggle('bg-emerald-600', !isAuto);
-        manualBtn.classList.toggle('text-white', !isAuto);
-        manualBtn.classList.toggle('bg-white', isAuto);
-        manualBtn.classList.toggle('text-gray-600', isAuto);
-
-        hint.innerHTML = isAuto
-            ? '<i class="fa-solid fa-circle-info mr-1"></i>System will generate a QR code containing the item\'s details automatically.'
-            : '<i class="fa-solid fa-pen mr-1"></i>Enter a valid QR payload manually. It should carry the item\'s information.';
-        hint.classList.toggle('text-gray-400', isAuto);
-        hint.classList.toggle('text-emerald-600', !isAuto);
-        if (!isAuto) input.focus();
-    }
-</script>
-@endpush
 @endsection

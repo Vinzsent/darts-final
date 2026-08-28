@@ -2,20 +2,20 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class UpdateUserRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     public function rules(): array
     {
-        $userId = $this->route('user');
+        $userId = Auth::id();
 
         return [
             'title' => 'nullable|string|max:20',
@@ -26,11 +26,9 @@ class UpdateUserRequest extends FormRequest
             'academic_title' => 'nullable|string|max:100',
             'email' => ['nullable', 'email', 'max:255', Rule::unique('employees', 'email')->ignore($userId)],
             'username' => ['required', 'string', 'max:255', Rule::unique('employees', 'username')->ignore($userId)],
-            'password' => 'nullable|string|min:6',
-            'user_type' => ['required', Rule::in(UsersController::userTypes())],
-            'position' => 'required|string|max:255',
             'department' => 'nullable|string|max:255',
-            'status' => 'nullable|string|in:ACTIVE,INACTIVE',
+            'current_password' => 'nullable|string|required_with:password',
+            'password' => 'nullable|string|min:6|confirmed',
         ];
     }
 }

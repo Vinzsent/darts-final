@@ -7,9 +7,15 @@
 <div class="min-h-[calc(100vh-220px)] bg-gradient-to-br from-slate-50 to-emerald-50 px-2 py-8">
     <div class="mx-auto max-w-7xl">
         <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-600 to-emerald-900 shadow-lg ring-4 ring-white">
-                <i class="fa-solid fa-building-columns text-white text-3xl"></i>
-            </div>
+            <div class="text-center mb-8">
+    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur rounded-2xl mb-4">
+        <img
+            src="/DCC2.png"
+            alt="Logo"
+            class="w-44 h-44 object-contain"
+        >
+    </div>
+</div>
             <h1 class="mt-5 text-4xl font-bold text-slate-900 tracking-tight">Welcome to DARTS</h1>
             <p class="mt-2 text-sm text-slate-500">Manage your assets efficiently with our comprehensive tools</p>
         </div>
@@ -22,7 +28,7 @@
                 ['label' => 'Supply Requisition', 'icon' => 'fa-clipboard-list', 'route' => 'supply-requests.index', 'color' => 'emerald', 'description' => 'Manage requests and approvals', 'roles' => ['*']],
                 ['label' => 'Property Requisition', 'icon' => 'fa-house-circle-check', 'route' => 'property.index', 'color' => 'cyan', 'description' => 'Property request and allocation flow', 'roles' => ['admin', 'Property Custodian']],
                 ['label' => 'School Year', 'icon' => 'fa-calendar-days', 'route' => 'reports.index', 'color' => 'blue', 'description' => 'Academic cycle records', 'roles' => ['admin', 'Supply In-charge']],
-                ['label' => 'Supply Offices', 'icon' => 'fa-warehouse', 'route' => 'suppliers.index', 'color' => 'violet', 'description' => 'Manage supply offices and vendors', 'roles' => ['admin', 'Purchasing Officer', 'Purchasing Staff']],
+                ['label' => 'Suppliers', 'icon' => 'fa-warehouse', 'route' => 'suppliers.index', 'color' => 'violet', 'description' => 'Manage suppliers and vendors', 'roles' => ['admin', 'Purchasing Officer', 'Purchasing Staff']],
                 ['label' => 'Service Form', 'icon' => 'fa-file-lines', 'route' => 'reports.index', 'color' => 'blue', 'description' => 'Service and request documentation', 'roles' => ['admin', 'Supply In-charge']],
                 ['label' => 'Service Form Reports', 'icon' => 'fa-chart-column', 'route' => 'reports.index', 'color' => 'orange', 'description' => 'Reporting and analytics', 'roles' => ['admin', 'Supply In-charge']],
                 ['label' => 'Printing Header Settings', 'icon' => 'fa-print', 'route' => 'reports.index', 'color' => 'indigo', 'description' => 'Configure report documents', 'roles' => ['admin']],
@@ -31,6 +37,8 @@
                 ['label' => 'Procurement', 'icon' => 'fa-file-invoice', 'route' => 'procurement.index', 'color' => 'yellow', 'description' => 'Procurement workflow and purchasing', 'roles' => ['admin', 'Purchasing Officer', 'Purchasing Staff']],
                 ['label' => 'Received Items', 'icon' => 'fa-truck-ramp-box', 'route' => 'procurement.index', 'color' => 'green', 'description' => 'Received goods and documentation', 'roles' => ['admin', 'Purchasing Officer']],
                 ['label' => 'Supply Inventory Management', 'icon' => 'fa-boxes-stacked', 'route' => 'inventory.index', 'color' => 'emerald', 'description' => 'Track stock, stockouts, and reorder levels', 'roles' => ['admin', 'Supply In-charge']],
+                ['label' => 'Personnel', 'icon' => 'fa-users', 'route' => 'personnel.index', 'color' => 'emerald', 'description' => 'Employee directory and asset assignments', 'roles' => ['admin', 'Property Custodian', 'Supply In-charge']],
+
                 ['label' => 'Property Inventory', 'icon' => 'fa-landmark', 'route' => 'property.index', 'color' => 'indigo', 'description' => 'Asset and property records', 'roles' => ['admin', 'Property Custodian']],
                 ['label' => 'Asset Registration', 'icon' => 'fa-tags', 'route' => 'property.index', 'color' => 'rose', 'description' => 'Register property and asset master data', 'roles' => ['admin', 'Property Custodian']],
                 ['label' => 'Maintenance', 'icon' => 'fa-screwdriver-wrench', 'route' => 'property.index', 'color' => 'cyan', 'description' => 'Maintenance and repair tracking', 'roles' => ['admin', 'Property Custodian']],
@@ -38,6 +46,7 @@
                 ['label' => 'Property Reports', 'icon' => 'fa-chart-pie', 'route' => 'reports.index', 'color' => 'blue', 'description' => 'Property report summaries', 'roles' => ['admin', 'Property Custodian']],
                 ['label' => 'Supply Reports', 'icon' => 'fa-file-export', 'route' => 'reports.index', 'color' => 'violet', 'description' => 'Supply operations statistics', 'roles' => ['admin', 'Supply In-charge']],
                 ['label' => 'Notifications', 'icon' => 'fa-bell', 'route' => 'notifications.index', 'color' => 'sky', 'description' => 'Notifications and activity feed', 'roles' => ['*']],
+                ['label' => 'My Profile', 'icon' => 'fa-id-card', 'route' => 'profile.show', 'color' => 'teal', 'description' => 'View and edit account information', 'roles' => ['*']],
                 ['label' => 'System Settings', 'icon' => 'fa-gear', 'route' => 'settings', 'color' => 'gray', 'description' => 'Configuration and system controls', 'roles' => ['admin', 'administrator']],
             ];
 
@@ -103,55 +112,6 @@
         </div>
     </div>
 </div>
-
-@if(session('settings_unlocked'))
-<div id="settings-detail-modal" class="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 backdrop-blur-sm">
-    <div class="w-full max-w-xl rounded-[2rem] border border-white/40 bg-white p-7 shadow-2xl">
-        <div class="flex items-start justify-between">
-            <div>
-                <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow">
-                    <i class="fa-solid fa-gear"></i>
-                </div>
-                <h2 class="mt-4 text-2xl font-bold text-slate-900">System Settings</h2>
-                <p class="mt-2 text-sm text-slate-500">Administrative configuration area</p>
-            </div>
-            <button type="button" data-close-details="settings" class="rounded-xl border border-slate-200 p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <div class="mt-6 grid gap-3">
-            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-semibold text-slate-900">Authentication Policies</span>
-                    <span class="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">Enabled</span>
-                </div>
-                <p class="mt-2 text-xs text-slate-500">Password protection and login security.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 p-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-semibold text-slate-900">Application Mode</span>
-                    <span class="rounded-full bg-slate-900 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">Production</span>
-                </div>
-                <p class="mt-2 text-xs text-slate-500">Connected to DARTS asset and procurement operations.</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 p-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-semibold text-slate-900">Notifications</span>
-                    <span class="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-800">Active</span>
-                </div>
-                <p class="mt-2 text-xs text-slate-500">Out-of-stock alerts and workflow updates are available.</p>
-            </div>
-        </div>
-
-        <div class="mt-6 flex justify-end gap-3">
-            <button type="button" data-close-details="settings" class="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-700">
-                Close
-            </button>
-        </div>
-    </div>
-</div>
-@endif
 
 <div id="settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-sm">
     <div class="w-full max-w-md rounded-3xl border border-white/20 bg-white p-6 shadow-2xl">
@@ -220,17 +180,6 @@
                 modal.classList.remove('flex');
             }
         });
-
-        const detailModal = document.getElementById('settings-detail-modal');
-        if (detailModal) {
-            const detailsClosers = document.querySelectorAll('[data-close-details="settings"]');
-            detailsClosers.forEach(function (el) {
-                el.addEventListener('click', function () {
-                    detailModal.classList.add('hidden');
-                    detailModal.classList.remove('flex');
-                });
-            });
-        }
     });
 </script>
 @endpush

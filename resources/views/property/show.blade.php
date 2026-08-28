@@ -1,14 +1,14 @@
 @extends(request()->has('modal') ? 'layouts.blank' : 'layouts.app')
 
-@section('title', $item->item_name . ' - Inventory - DARTS')
-@section('page-title', $item->item_name)
+@section('title', $property->item_name . ' - Property - DARTS')
+@section('page-title', $property->item_name)
 
 @section('content')
 <div class="space-y-6">
     {{-- Back link --}}
     @if(!request()->has('modal'))
-    <a href="{{ route('inventory.index') }}" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition">
-        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Inventory
+    <a href="{{ route('property.index') }}" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition">
+        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Property
     </a>
     @endif
 
@@ -19,12 +19,12 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-200">
                 <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                     <div class="flex items-center space-x-2">
-                        <i class="fa-solid fa-box text-emerald-600"></i>
-                        <h3 class="text-lg font-semibold text-gray-900">Item Details</h3>
+                        <i class="fa-solid fa-couch text-emerald-600"></i>
+                        <h3 class="text-lg font-semibold text-gray-900">Property Details</h3>
                     </div>
                     @if(!request()->has('modal'))
                     <div class="flex items-center space-x-2">
-                        <a href="{{ route('inventory.edit', $item->inventory_id) }}" class="px-3 py-1.5 text-sm bg-amber-50 text-amber-700 rounded-lg hover:bg-amber-100 transition">
+                        <a href="{{ route('property.edit', $property->inventory_id) }}" class="px-3 py-1.5 text-sm bg-amber-50 text-amber-700 rounded-lg hover:bg-amber-100 transition">
                             <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
                         </a>
                     </div>
@@ -34,50 +34,50 @@
                     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Item Name</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->item_name }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->item_name }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Category</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->category ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->category ?? '--' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->brand ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->brand ?? '--' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Type</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->type ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->type ?? '--' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Color</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->color ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->color ?? '--' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Size</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->size ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->size ?? '--' }}</dd>
                         </div>
                         <div class="sm:col-span-2">
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Description</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->description ?? 'No description.' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->description ?? 'No description.' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Location</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->location ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->location ?? '--' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Receiver</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->receiver ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->receiver ?? '--' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $item->supplier->supplier_name ?? '--' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $property->supplier->supplier_name ?? '--' }}</dd>
                         </div>
                         <div>
                             <dt class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status</dt>
                             <dd class="mt-1">
-                                @if($item->status === 'Active')
+                                @if($property->status === 'Active')
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">Active</span>
-                                @elseif($item->status === 'Inactive')
+                                @elseif($property->status === 'Inactive')
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Inactive</span>
                                 @else
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Discontinued</span>
@@ -103,12 +103,12 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reference</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Previous → New</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Notes</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @forelse($item->stockLogs as $log)
+                            @forelse($property->stockLogs as $log)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-600">{{ $log->date_created ? date('M d, Y h:i A', strtotime($log->date_created)) : '--' }}</td>
                                 <td class="px-6 py-3 whitespace-nowrap">
@@ -148,30 +148,34 @@
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-500">Current Stock</span>
-                        <span class="text-lg font-bold {{ $item->is_low_stock ? ($item->current_stock <= 0 ? 'text-red-600' : 'text-amber-600') : 'text-gray-900' }}">
-                            {{ number_format($item->current_stock) }}
+                        <span class="text-lg font-bold text-gray-900">
+                            {{ number_format($property->current_stock) }}
                         </span>
                     </div>
-                    @if($item->unit)
+                    @if($property->unit)
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-500">Unit</span>
-                        <span class="text-sm font-medium text-gray-900">{{ $item->unit }}</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $property->unit }}</span>
                     </div>
                     @endif
                     <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Quantity</span>
+                        <span class="text-sm font-medium text-gray-900">{{ number_format($property->quantity) }}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-500">Reorder Level</span>
-                        <span class="text-sm font-medium text-gray-900">{{ number_format($item->reorder_level) }}</span>
+                        <span class="text-sm font-medium text-gray-900">{{ number_format($property->reorder_level) }}</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-500">Unit Cost</span>
-                        <span class="text-sm font-medium text-gray-900">&#8369;{{ number_format($item->unit_cost, 2) }}</span>
+                        <span class="text-sm font-medium text-gray-900">&#8369;{{ number_format($property->unit_cost, 2) }}</span>
                     </div>
                     <hr class="border-gray-200">
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-500">Stock Status</span>
-                        @if($item->stock_status === 'out')
+                        @if($property->current_stock <= 0)
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">Out of Stock</span>
-                        @elseif($item->stock_status === 'low')
+                        @elseif($property->current_stock <= $property->reorder_level)
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">Low Stock</span>
                         @else
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">In Stock</span>
@@ -183,13 +187,13 @@
             {{-- Stock Adjustment --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <h3 class="text-sm font-semibold text-gray-900 mb-4">Adjust Stock</h3>
-                <form action="{{ route('inventory.stock-adjust', $item->inventory_id) }}" method="POST" class="space-y-3">
+                <form action="{{ route('property.stock-adjust', $property->inventory_id) }}" method="POST" class="space-y-3">
                     @csrf
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Type</label>
                         <select name="type" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500">
-                            <option value="add">Add Stock</option>
-                            <option value="subtract">Remove Stock</option>
+                            <option value="add">Stock In (Add)</option>
+                            <option value="subtract">Stock Out (Remove)</option>
                             <option value="set">Set to Exact</option>
                         </select>
                     </div>
@@ -213,22 +217,22 @@
                 <div class="space-y-3 text-sm">
                     <div>
                         <span class="text-gray-500">Created By</span>
-                        <p class="font-medium text-gray-900">{{ $item->creator->display_name ?? '--' }}</p>
+                        <p class="font-medium text-gray-900">{{ $property->creator->display_name ?? '--' }}</p>
                     </div>
                     <div>
                         <span class="text-gray-500">Date Created</span>
-                        <p class="font-medium text-gray-900">{{ $item->date_created ? date('M d, Y h:i A', strtotime($item->date_created)) : '--' }}</p>
+                        <p class="font-medium text-gray-900">{{ $property->date_created ? date('M d, Y h:i A', strtotime($property->date_created)) : '--' }}</p>
                     </div>
-                    @if($item->last_updated_by)
+                    @if($property->last_updated_by)
                     <div>
                         <span class="text-gray-500">Last Updated By</span>
-                        <p class="font-medium text-gray-900">{{ $item->updater->display_name ?? '--' }}</p>
+                        <p class="font-medium text-gray-900">{{ $property->updater->display_name ?? '--' }}</p>
                     </div>
                     @endif
-                    @if($item->date_updated)
+                    @if($property->date_updated)
                     <div>
                         <span class="text-gray-500">Date Updated</span>
-                        <p class="font-medium text-gray-900">{{ date('M d, Y h:i A', strtotime($item->date_updated)) }}</p>
+                        <p class="font-medium text-gray-900">{{ date('M d, Y h:i A', strtotime($property->date_updated)) }}</p>
                     </div>
                     @endif
                 </div>
