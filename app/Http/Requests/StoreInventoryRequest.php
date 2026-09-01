@@ -32,7 +32,7 @@ class StoreInventoryRequest extends FormRequest
             'status'        => 'nullable|in:Active,Inactive,Discontinued',
             'received_notes' => 'nullable|string',
             'qrcode_mode'   => 'nullable|in:auto,manual',
-            'qrcode'        => 'nullable|string|max:1000',
+            'qrcode'        => 'nullable|string|max:255',
         ];
     }
 }
