@@ -18,11 +18,14 @@ class InventoryController extends Controller
 
     private function generateQrcode(array $data): string
     {
+        // Keep payload short enough to always fit varchar(255)
+        $cut = fn ($v, $n) => mb_substr(trim((string) $v), 0, $n);
+
         $payload = [
-            'type'     => 'INVENTORY_ITEM',
-            'name'     => $data['item_name'] ?? '',
-            'category' => $data['category'] ?? '',
-            'brand'    => $data['brand'] ?? '',
+            'type'     => 'INV',
+            'name'     => $cut($data['item_name'] ?? '', 60),
+            'category' => $cut($data['category'] ?? '', 30),
+            'brand'    => $cut($data['brand'] ?? '', 30),
             'sku'      => 'INV-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 8)),
         ];
 
@@ -68,7 +71,11 @@ class InventoryController extends Controller
             $q->orderBy('date_created', 'desc')->limit(50);
         }])->findOrFail($id);
 
-        return view('inventory.show', compact('item'));
+        $qrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(180)
+            ->errorCorrection('H')
+            ->generate($item->qrcode ?: $item->item_name);
+
+        return view('inventory.show', compact('item', 'qrCode'));
     }
 
     public function edit(int $id)
