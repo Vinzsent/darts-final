@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\PropertyInventory;
+use App\Models\PropertyRequest;
+use App\Models\SupplyRequest;
 use Illuminate\Http\Request;
 
 class ScannerController extends Controller
@@ -37,6 +39,26 @@ class ScannerController extends Controller
             ->when($sku, fn ($q) => $q->orWhere('barcode', $sku))
             ->first()) {
             return response()->json(['redirect' => route('property.show', $property->id)]);
+        }
+
+        // Request QR codes (generated on submit): {"type":"SUPPLY_REQUEST"/"PROPERTY_REQUEST", ...}
+        if (is_array($payload) && isset($payload['type'])) {
+            if ($payload['type'] === 'SUPPLY_REQUEST'
+                && ($req = SupplyRequest::where('qrcode', $code)->orWhere('request_id', $payload['id'] ?? 0)->first())) {
+                return response()->json(['redirect' => route('supply-requests.show', $req->request_id)]);
+            }
+            if ($payload['type'] === 'PROPERTY_REQUEST'
+                && ($req = PropertyRequest::where('qrcode', $code)->orWhere('property_id', $payload['id'] ?? 0)->first())) {
+                return response()->json(['redirect' => route('property-requests.show', $req->property_id)]);
+            }
+        }
+
+        // Plain-code fallback on request tables
+        if ($req = SupplyRequest::where('qrcode', $code)->first()) {
+            return response()->json(['redirect' => route('supply-requests.show', $req->request_id)]);
+        }
+        if ($req = PropertyRequest::where('qrcode', $code)->first()) {
+            return response()->json(['redirect' => route('property-requests.show', $req->property_id)]);
         }
 
         return response()->json(['message' => 'No item matches this QR code.'], 404);
