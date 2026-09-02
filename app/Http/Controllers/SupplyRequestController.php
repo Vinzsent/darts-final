@@ -48,7 +48,11 @@ class SupplyRequestController extends Controller
             'user', 'noter', 'checker', 'verifier', 'issuer', 'approver'
         ])->findOrFail($id);
 
-        return view('supply-requests.show', compact('supplyRequest'));
+        $qrCode = $supplyRequest->qrcode
+            ? \SimpleSoftwareIO\QrCode\Facades\QrCode::size(140)->errorCorrection('H')->generate($supplyRequest->qrcode)
+            : null;
+
+        return view('supply-requests.show', compact('supplyRequest', 'qrCode'));
     }
 
     public function edit($id)
