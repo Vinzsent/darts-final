@@ -29,7 +29,9 @@ class StorePropertyRequest extends FormRequest
             'location'      => 'nullable|string|max:255',
             'receiver'      => 'nullable|string|max:255',
             'status'        => 'nullable|in:Active,Inactive,Discontinued',
+            'barcode'       => 'nullable|string|max:100',
             'received_notes' => 'nullable|string',
+            'qrcode'        => 'nullable|string|max:255',
         ];
     }
 }
