@@ -32,6 +32,7 @@ class StoreSupplyRequest extends FormRequest
             'semester'             => 'nullable|string|max:50',
             'school_year'          => 'nullable|string|max:50',
             'remarks'              => 'nullable|string|max:5000',
+            'qrcode'               => 'nullable|string|max:255',
         ];
 
         // Only enforce future date on create — allow editing existing past dates
