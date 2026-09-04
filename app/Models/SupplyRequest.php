@@ -18,6 +18,7 @@ class SupplyRequest extends Model
         'noted_by', 'noted_date', 'checked_by', 'checked_date',
         'verified_by', 'verified_date', 'issued_by', 'issued_date',
         'approved_by', 'approved_date', 'remarks', 'status', 'semester', 'school_year',
+        'qrcode',
     ];
 
     public function user()
