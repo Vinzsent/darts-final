@@ -48,12 +48,30 @@ class PropertyController extends Controller
     public function create()
     {
         $suppliers = Supplier::orderBy('supplier_name')->get();
-        return view('property.create', compact('suppliers'));
+        $suggestedSku = $this->uniqueSku('PRP', 'property_inventory');
+        return view('property.create', compact('suppliers', 'suggestedSku'));
+    }
+
+    /**
+     * Generate a unique SKU for the given table/prefix.
+     */
+    private function uniqueSku(string $prefix, string $table, string $column = 'sku'): string
+    {
+        do {
+            $sku = $prefix . '-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+        } while (DB::table($table)->where($column, $sku)->exists());
+
+        return $sku;
     }
 
     public function store(StorePropertyRequest $request)
     {
         $data = $request->validated();
+
+        // Auto-generate a unique SKU when not provided (or taken)
+        if (empty($data['sku']) || DB::table('property_inventory')->where('sku', $data['sku'])->exists()) {
+            $data['sku'] = $this->uniqueSku('PRP', 'property_inventory');
+        }
 
         // Barcode: auto-generate or validate manual entry
         if (($request->input('barcode_mode') ?? 'auto') === 'manual' && !empty($data['barcode'])) {
@@ -99,7 +117,12 @@ class PropertyController extends Controller
             ->errorCorrection('H')
             ->generate($property->qrcode ?? $property->barcode ?? $property->item_name);
 
-        return view('property.show', compact('property', 'qrCode'));
+        $logs = \App\Models\PropertyStockLog::where('inventory_id', $property->property_id ?? $property->id)
+            ->orderBy('date_created', 'desc')
+            ->paginate(4)
+            ->onEachSide(1);
+
+        return view('property.show', compact('property', 'qrCode', 'logs'));
     }
 
     public function edit(int $id)
