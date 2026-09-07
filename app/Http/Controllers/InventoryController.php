@@ -9,6 +9,7 @@ use App\Models\StockLog;
 use App\Models\Supplier;
 use App\Services\InventoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
@@ -26,10 +27,22 @@ class InventoryController extends Controller
             'name'     => $cut($data['item_name'] ?? '', 60),
             'category' => $cut($data['category'] ?? '', 30),
             'brand'    => $cut($data['brand'] ?? '', 30),
-            'sku'      => 'INV-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 8)),
+            'sku'      => $data['sku'] ?? '',
         ];
 
         return json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Generate a unique SKU for the given table/prefix.
+     */
+    private function uniqueSku(string $prefix, string $table, string $column = 'sku'): string
+    {
+        do {
+            $sku = $prefix . '-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+        } while (DB::table($table)->where($column, $sku)->exists());
+
+        return $sku;
     }
 
     public function index(Request $request)
@@ -47,12 +60,18 @@ class InventoryController extends Controller
     public function create()
     {
         $suppliers = Supplier::where('status', 'Active')->orderBy('supplier_name')->get();
-        return view('inventory.create', compact('suppliers'));
+        $suggestedSku = $this->uniqueSku('INV', 'inventory');
+        return view('inventory.create', compact('suppliers', 'suggestedSku'));
     }
 
     public function store(StoreInventoryRequest $request)
     {
         $data = $request->validated();
+
+        // Auto-generate a unique SKU when not provided (or taken)
+        if (empty($data['sku']) || DB::table('inventory')->where('sku', $data['sku'])->exists()) {
+            $data['sku'] = $this->uniqueSku('INV', 'inventory');
+        }
 
         // Automatic mode (or manual left empty): generate a QR code server-side
         if ($request->input('qrcode_mode') !== 'manual' || empty($data['qrcode'])) {
@@ -75,7 +94,12 @@ class InventoryController extends Controller
             ->errorCorrection('H')
             ->generate($item->qrcode ?: $item->item_name);
 
-        return view('inventory.show', compact('item', 'qrCode'));
+        $logs = StockLog::where('inventory_id', $id)
+            ->orderBy('date_created', 'desc')
+            ->paginate(4)
+            ->onEachSide(1);
+
+        return view('inventory.show', compact('item', 'qrCode', 'logs'));
     }
 
     public function edit(int $id)
