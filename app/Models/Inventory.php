@@ -15,6 +15,7 @@ class Inventory extends Model
         'current_stock', 'quantity', 'unit', 'unit_cost', 'reorder_level',
         'supplier_id', 'location', 'receiver', 'status', 'received_notes',
         'created_by', 'date_created', 'last_updated_by', 'date_updated', 'qrcode',
+        'sku',
     ];
 
     public function supplier()
