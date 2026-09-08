@@ -27,6 +27,8 @@ class UpdateProfileRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:255', Rule::unique('employees', 'email')->ignore($userId)],
             'username' => ['required', 'string', 'max:255', Rule::unique('employees', 'username')->ignore($userId)],
             'department' => 'nullable|string|max:255',
+            'profile' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'remove_profile' => 'nullable|boolean',
             'current_password' => 'nullable|string|required_with:password',
             'password' => 'nullable|string|min:6|confirmed',
         ];
