@@ -25,6 +25,7 @@ class User extends Authenticatable
         'user_type',
         'username',
         'password',
+        'profile',
         'status',
         'position',
     ];
@@ -56,5 +57,18 @@ class User extends Authenticatable
         $name = trim("{$this->first_name} {$this->last_name}");
         if ($this->suffix) $name .= ", {$this->suffix}";
         return $name;
+    }
+
+    public function getProfileUrlAttribute(): ?string
+    {
+        if ($this->profile && \Illuminate\Support\Facades\Storage::disk('public')->exists($this->profile)) {
+            return asset('storage/' . $this->profile);
+        }
+        return null;
+    }
+
+    public function getInitialsAttribute(): string
+    {
+        return strtoupper(substr($this->first_name ?? 'U', 0, 1) . substr($this->last_name ?? 'S', 0, 1));
     }
 }
