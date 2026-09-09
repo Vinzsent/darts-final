@@ -41,7 +41,25 @@ class SupplyRequestService
         $data['amount'] = $data['amount'] ?? 0;
         $data['quality_issued'] = $data['quality_issued'] ?? '';
 
-        return SupplyRequest::create($data);
+        $cut = fn ($v, $n) => mb_substr(trim((string) $v), 0, $n);
+        $payload = [
+            'type'       => 'SUPPLY_REQUEST',
+            'item'       => $cut($data['item_name'] ?? '', 60),
+            'qty'        => $data['quantity_requested'] ?? 1,
+            'unit'       => $cut($data['unit'] ?? '', 15),
+            'department' => $cut($data['department_unit'] ?? '', 30),
+            'purpose'    => $cut($data['purpose'] ?? '', 60),
+            'requestor'  => $cut(Auth::user()->display_name ?? '', 30),
+        ];
+        $data['qrcode'] = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        $request = SupplyRequest::create($data);
+
+        // Include the real primary key ID and update qrcode
+        $payload['id'] = $request->request_id;
+        $request->update(['qrcode' => json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)]);
+
+        return $request;
     }
 
     public function approveStep($id, $step, $userId)
