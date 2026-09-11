@@ -15,4 +15,18 @@ class AirconImage extends Model
     {
         return $this->belongsTo(Aircon::class, 'aircon_id', 'aircon_id');
     }
+
+    public function getUrlAttribute(): ?string
+    {
+        if (! $this->image_path) {
+            return null;
+        }
+
+        // Legacy rows store pre-existing relative paths.
+        if (str_starts_with($this->image_path, 'uploads/')) {
+            return asset($this->image_path);
+        }
+
+        return asset('storage/' . $this->image_path);
+    }
 }
