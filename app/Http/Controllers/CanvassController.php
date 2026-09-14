@@ -122,8 +122,8 @@ class CanvassController extends Controller
             $canvass->update([
                 'canvass_date' => $validated['canvass_date'],
                 'status' => $validated['status'],
-                'canvassed_by' => $validated['canvassed_by'],
-                'notes' => $validated['notes'],
+                'canvassed_by' => $validated['canvassed_by'] ?? null,
+                'notes' => $validated['notes'] ?? null,
                 'total_amount' => $totalAmount,
             ]);
 
