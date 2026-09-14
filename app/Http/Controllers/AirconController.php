@@ -124,7 +124,7 @@ public function edit(int $id)
             return;
         }
 
-        $incoming = $request->files('images');
+        $incoming = $request->file('images');
         $uploaded = is_array($incoming) ? $incoming : [$incoming];
         $uploaded = array_values(array_filter($uploaded, fn($f) => $f !== null));
         if (count($uploaded) === 0) {
