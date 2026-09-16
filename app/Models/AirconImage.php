@@ -8,6 +8,7 @@ class AirconImage extends Model
 {
     protected $table = 'aircon_images';
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     protected $fillable = ['aircon_id', 'image_path', 'created_at'];
 
