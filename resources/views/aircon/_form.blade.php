@@ -117,7 +117,7 @@
     </div>
 <div class="border-2 border-dashed border-gray-300 rounded-xl p-6">
         <h4 class="text-sm font-semibold text-gray-900 flex items-center"><i class="fa-solid fa-image text-emerald-600 mr-2"></i> Unit Photos
-            <span class="ml-2 text-xs text-gray-400">(max 5 — {{ $item->images->count() ?? 0 }} stored)</span>
+            <span class="ml-2 text-xs text-gray-400">(max 5 — {{ $item ? $item->images->count() : 0 }} stored)</span>
         </h4>
 
         @if($item && !$item->images->isEmpty())
