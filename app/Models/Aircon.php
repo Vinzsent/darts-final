@@ -8,6 +8,7 @@ class Aircon extends Model
 {
     protected $table = 'aircons';
     protected $primaryKey = 'aircon_id';
+    public $timestamps = false;
 
     protected $fillable = [
         'item_number', 'category', 'brand', 'model', 'type', 'quantity',
