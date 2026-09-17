@@ -113,6 +113,10 @@
                 </div>
 
                 <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Item No. <span class="text-red-500">*</span></label>
+                    <input type="number" name="items[${itemIndex}][item_number]" value="${itemIndex + 1}" min="1" required class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                </div>
+                <div>
                     <label class="mb-1 block text-sm font-medium text-slate-700">Supplier Name <span class="text-red-500">*</span></label>
                     <input type="text" name="items[${itemIndex}][supplier_name]" required class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                 </div>
