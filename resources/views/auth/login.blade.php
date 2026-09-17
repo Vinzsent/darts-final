@@ -18,7 +18,7 @@
             <div class="text-center mb-8">
     <div class="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur rounded-2xl mb-4">
         <img
-            src="/DCC2.png"
+            src="{{ asset('DCC2.png') }}"
             alt="Logo"
             class="w-10 h-10 object-contain"
         >
@@ -79,6 +79,19 @@
             </p>
         </div>
     </div>
+<script>
+        document.addEventListener('submit', function (e) {
+            const form = e.target;
+            if (form.dataset.submitting === '1') { e.preventDefault(); return; }
+            const btn = form.querySelector('button[type="submit"]');
+            if (!btn || btn.dataset.noGuard === '1') return;
+            form.dataset.submitting = '1';
+            btn.disabled = true;
+            btn.dataset.originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Logging in...';
+            setTimeout(() => { btn.disabled = false; form.dataset.submitting = ''; btn.innerHTML = btn.dataset.originalHtml; }, 10000);
+        }, true);
+    </script>
 </body>
 
 </html>
