@@ -197,6 +197,14 @@ class PropertyController extends Controller
             'date_created' => now(),
         ]);
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Stock adjusted for '{$property->item_name}'.",
+                'current_stock' => $property->fresh()->current_stock,
+            ]);
+        }
+
         return redirect()->route('property.show', $property->inventory_id)
             ->with('success', 'Stock adjusted successfully.');
     }
