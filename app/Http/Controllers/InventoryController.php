@@ -59,7 +59,7 @@ class InventoryController extends Controller
 
     public function create()
     {
-        $suppliers = Supplier::where('status', 'Active')->orderBy('supplier_name')->get();
+        $suppliers = Supplier::orderBy('supplier_name')->get();
         $suggestedSku = $this->uniqueSku('INV', 'inventory');
         return view('inventory.create', compact('suppliers', 'suggestedSku'));
     }
@@ -105,7 +105,7 @@ class InventoryController extends Controller
     public function edit(int $id)
     {
         $item = Inventory::findOrFail($id);
-        $suppliers = Supplier::where('status', 'Active')->orderBy('supplier_name')->get();
+        $suppliers = Supplier::orderBy('supplier_name')->get();
         return view('inventory.edit', compact('item', 'suppliers'));
     }
 
@@ -158,6 +158,14 @@ class InventoryController extends Controller
             $request->type,
             $request->notes ?? ''
         );
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Stock adjusted for '{$item->item_name}'.",
+                'current_stock' => $item->fresh()->current_stock,
+            ]);
+        }
 
         return redirect()->route('inventory.show', $id)
             ->with('success', "Stock adjusted for '{$item->item_name}'.");
