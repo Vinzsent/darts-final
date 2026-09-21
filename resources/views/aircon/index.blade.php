@@ -139,7 +139,7 @@
                     <div class="mt-4 pt-3 border-t border-gray-200 flex items-center gap-2 justify-end">
                         <a href="{{ route('aircon.show', $item->aircon_id) }}" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition"><i class="fa-solid fa-eye mr-1.5"></i> View</a>
                         <a href="{{ route('aircon.edit', $item->aircon_id) }}" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 rounded-lg hover:bg-amber-100 transition"><i class="fa-solid fa-pen-to-square mr-1.5"></i> Edit</a>
-                        <form action="{{ route('aircon.destroy', $item->aircon_id) }}" method="POST" onsubmit="return confirm('Delete this aircon unit and its photos?')" class="inline">
+                        <form action="{{ route('aircon.destroy', $item->aircon_id) }}" method="POST" onsubmit="return confirmDelete(this)" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"><i class="fa-solid fa-trash-can mr-1.5"></i> Delete</button>
