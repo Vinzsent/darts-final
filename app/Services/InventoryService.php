@@ -62,30 +62,30 @@ class InventoryService
     {
         return DB::transaction(function () use ($id, $quantity, $type, $notes) {
             $inventory = Inventory::findOrFail($id);
+            $previousStock = (int) $inventory->current_stock;
 
             if ($type === 'add') {
-                $inventory->increment('current_stock', $quantity);
+                $newStock = $previousStock + $quantity;
             } elseif ($type === 'subtract') {
-                $inventory->decrement('current_stock', $quantity);
+                $newStock = max(0, $previousStock - $quantity);
             } else {
-                $inventory->current_stock = $quantity;
-                $inventory->save();
+                $newStock = $quantity;
             }
 
+            $inventory->current_stock  = $newStock;
             $inventory->last_updated_by = Auth::id();
-            $inventory->date_updated = now();
+            $inventory->date_updated   = now();
             $inventory->save();
 
-            $oldStock = $inventory->current_stock - ($type === 'add' ? $quantity : -$quantity);
             StockLog::create([
-                'inventory_id'    => $inventory->inventory_id,
-                'movement_type'   => $type === 'add' ? 'IN' : ($type === 'subtract' ? 'OUT' : 'ADJUSTMENT'),
-                'quantity'        => $quantity,
-                'previous_stock'  => max(0, $oldStock),
-                'new_stock'       => $inventory->current_stock,
-                'notes'           => $notes,
-                'created_by'      => Auth::id(),
-                'date_created'    => now(),
+                'inventory_id'   => $inventory->inventory_id,
+                'movement_type'  => $type === 'add' ? 'IN' : ($type === 'subtract' ? 'OUT' : 'ADJUSTMENT'),
+                'quantity'       => $quantity,
+                'previous_stock' => $previousStock,
+                'new_stock'      => $newStock,
+                'notes'          => $notes,
+                'created_by'     => Auth::id(),
+                'date_created'   => now(),
             ]);
 
             return $inventory->fresh();
