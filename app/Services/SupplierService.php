@@ -14,11 +14,11 @@ class SupplierService
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('supplier_name', 'like', "%{$search}%")
-                  ->orWhere('contact_person', 'like', "%{$search}%")
-                  ->orWhere('contact_number', 'like', "%{$search}%")
-                  ->orWhere('email_address', 'like', "%{$search}%")
-                  ->orWhere('business_type', 'like', "%{$search}%")
-                  ->orWhere('category', 'like', "%{$search}%");
+                    ->orWhere('contact_person', 'like', "%{$search}%")
+                    ->orWhere('contact_number', 'like', "%{$search}%")
+                    ->orWhere('email_address', 'like', "%{$search}%")
+                    ->orWhere('business_type', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%");
             });
         }
 
