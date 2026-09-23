@@ -136,13 +136,13 @@
                             <td class="px-5 py-4 text-slate-600">{{ $canvass->creator->display_name ?? 'N/A' }}</td>
                             <td class="px-5 py-4">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('canvass.show', $canvass->canvass_id) }}" class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-600 transition hover:bg-blue-100" title="View">
+                                    <a href="#" data-url="{{ route('canvass.show', $canvass->canvass_id) }}" data-title="Canvass #{{ $canvass->canvass_id }}" onclick="return openViewModal(this)" class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-600 transition hover:bg-blue-100" title="View">
                                         <i class="fa-solid fa-eye text-xs"></i>
                                     </a>
                                     <a href="{{ route('canvass.edit', $canvass->canvass_id) }}" class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-amber-200 bg-amber-50 text-amber-600 transition hover:bg-amber-100" title="Edit">
                                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                                     </a>
-                                    <form action="{{ route('canvass.destroy', $canvass->canvass_id) }}" method="POST" onsubmit="return confirm('Delete this canvass?')" class="inline-block">
+                                    <form action="{{ route('canvass.destroy', $canvass->canvass_id) }}" method="POST" onsubmit="return confirmDelete(this)" class="inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100" title="Delete">
