@@ -20,8 +20,12 @@
             {{-- Profile Dropdown --}}
             <div class="relative" x-data="{ open: false }">
                 <button @@click="open = !open" class="flex items-center space-x-2 text-sm text-gray-700 hover:text-gray-900">
-                    <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">
-                        {{ substr(Auth::user()->first_name ?? 'U', 0, 1) }}{{ substr(Auth::user()->last_name ?? 'S', 0, 1) }}
+                    <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full overflow-hidden flex items-center justify-center text-xs font-bold shrink-0 ring-1 ring-emerald-500/20">
+                        @if(Auth::user()->profile_url)
+                            <img src="{{ Auth::user()->profile_url }}" alt="{{ Auth::user()->display_name }}" class="w-full h-full object-cover">
+                        @else
+                            {{ Auth::user()->initials }}
+                        @endif
                     </div>
                     <span class="hidden sm:block">{{ Auth::user()->display_name }}</span>
                     <i class="fa-solid fa-chevron-down text-xs"></i>
