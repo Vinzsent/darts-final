@@ -13,7 +13,7 @@
             <a href="{{ route('aircon.edit', $item->aircon_id) }}" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
                 <i class="fa-solid fa-pen-to-square mr-1.5"></i> Edit
             </a>
-            <form action="{{ route('aircon.destroy', $item->aircon_id) }}" method="POST" onsubmit="return confirm('Delete this aircon unit and its photos?')" class="inline">
+            <form action="{{ route('aircon.destroy', $item->aircon_id) }}" method="POST" onsubmit="return confirmDelete(this)" class="inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition">
