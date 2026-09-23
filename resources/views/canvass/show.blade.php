@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(request()->has('modal') ? 'layouts.blank' : 'layouts.app')
 
 @section('title', 'Canvass Details - DARTS')
 @section('page-title', 'Canvass Details')
@@ -10,6 +10,7 @@
             <p class="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Canvass</p>
             <h2 class="mt-1 text-2xl font-bold text-slate-900">#{{ $canvass->canvass_id }}</h2>
         </div>
+        @if(!request()->has('modal'))
         <div class="flex items-center gap-3">
             <a href="{{ route('canvass.edit', $canvass->canvass_id) }}" class="inline-flex items-center rounded-xl border border-amber-300 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700 transition hover:bg-amber-100">
                 <i class="fa-solid fa-pen-to-square mr-2"></i>
@@ -20,6 +21,7 @@
                 Back
             </a>
         </div>
+        @endif
     </div>
 
     <div class="grid gap-4 lg:grid-cols-4">
