@@ -54,7 +54,7 @@
         <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
             <div class="mb-4 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-slate-900">Canvass Items</h3>
-                <button type="button" id="add-item" class="inline-flex items-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">
+                <button type="button" id="add-item" class="inline-flex items-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 shadow-md" style="position:sticky;top:78px;z-index:40">
                     <i class="fa-solid fa-plus mr-2"></i>
                     Add Item
                 </button>
@@ -71,6 +71,7 @@
                         </div>
 
                         <input type="hidden" name="items[{{ $loop->index }}][canvass_item_id]" value="{{ $item->canvass_item_id }}">
+                        <input type="hidden" name="items[{{ $loop->index }}][item_number]" value="{{ $item->item_number }}">
                         <div class="grid gap-4 md:grid-cols-2">
                             <div class="md:col-span-2">
                                 <label class="mb-1 block text-sm font-medium text-slate-700">Item Description <span class="text-red-500">*</span></label>
@@ -148,6 +149,10 @@
                     <textarea name="items[${itemIndex}][item_description]" rows="2" required class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"></textarea>
                 </div>
                 <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Item No. <span class="text-red-500">*</span></label>
+                    <input type="number" name="items[${itemIndex}][item_number]" value="${itemIndex + 1}" min="1" required class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                </div>
+                <div>
                     <label class="mb-1 block text-sm font-medium text-slate-700">Supplier Name <span class="text-red-500">*</span></label>
                     <input type="text" name="items[${itemIndex}][supplier_name]" required class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                 </div>
@@ -182,6 +187,10 @@
         row.querySelectorAll('.item-qty, .item-cost').forEach(function (input) {
             input.addEventListener('input', updateTotalAmount);
         });
+
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const firstField = row.querySelector('textarea') || row.querySelector('input:not([type="hidden"])');
+        if (firstField) setTimeout(function () { firstField.focus(); }, 300);
     }
 
     function updateTotalAmount() {
