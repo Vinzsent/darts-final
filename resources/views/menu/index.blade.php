@@ -10,7 +10,7 @@
             <div class="text-center mb-8">
     <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur rounded-2xl mb-4">
         <img
-            src="/DCC2.png"
+            src="{{ asset('DCC2.png') }}"
             alt="Logo"
             class="w-44 h-44 object-contain"
         >
@@ -26,8 +26,9 @@
 
             $allMenus = [
                 ['label' => 'Supply Requisition', 'icon' => 'fa-clipboard-list', 'route' => 'supply-requests.index', 'color' => 'emerald', 'description' => 'Manage requests and approvals', 'roles' => ['*']],
-                ['label' => 'Property Requisition', 'icon' => 'fa-house-circle-check', 'route' => 'property.index', 'color' => 'cyan', 'description' => 'Property request and allocation flow', 'roles' => ['admin', 'Property Custodian']],
-                ['label' => 'School Year', 'icon' => 'fa-calendar-days', 'route' => 'reports.index', 'color' => 'blue', 'description' => 'Academic cycle records', 'roles' => ['admin', 'Supply In-charge']],
+                ['label' => 'Property Requisition', 'icon' => 'fa-house-circle-check', 'route' => 'property-requests.index', 'color' => 'cyan', 'description' => 'Property request and allocation flow', 'roles' => ['*']],
+                ['label' => 'Scanner', 'icon' => 'fa-camera', 'route' => 'scanner.index', 'color' => 'orange', 'description' => 'Scan QR code for Items', 'roles' => ['admin', 'Property Custodian', 'Supply In-charge']],
+                ['label' => 'School Year', 'icon' => 'fa-calendar-days', 'route' => 'school-years.index', 'color' => 'blue', 'description' => 'Academic cycle records', 'roles' => ['admin']],
                 ['label' => 'Suppliers', 'icon' => 'fa-warehouse', 'route' => 'suppliers.index', 'color' => 'violet', 'description' => 'Manage suppliers and vendors', 'roles' => ['admin', 'Purchasing Officer', 'Purchasing Staff']],
                 ['label' => 'Service Form', 'icon' => 'fa-file-lines', 'route' => 'reports.index', 'color' => 'blue', 'description' => 'Service and request documentation', 'roles' => ['admin', 'Supply In-charge']],
                 ['label' => 'Service Form Reports', 'icon' => 'fa-chart-column', 'route' => 'reports.index', 'color' => 'orange', 'description' => 'Reporting and analytics', 'roles' => ['admin', 'Supply In-charge']],
@@ -89,7 +90,7 @@
                     </div>
                 @else
                     <div class="menu-card group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/90 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                        <a href="{{ route($route) }}" class="block p-6 h-full">
+                        <a href="{{ route($route) }}" @if($menu['label'] === 'Supply Requisition') onclick="event.preventDefault(); openSupplyTypeModal();" @endif class="block p-6 h-full">
                             <div class="flex items-center justify-between">
                                 <span class="menu-card-icon inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-900 text-white shadow-sm">
                                     <i class="fa-solid {{ $menu['icon'] }} {{ $iconSize }}"></i>
@@ -149,10 +150,71 @@
     </div>
 </div>
 
+{{-- Supply Requisition Type Selection Modal --}}
+<div id="supply-type-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
+    <div class="w-full max-w-lg rounded-3xl border border-white/20 bg-white p-6 shadow-2xl">
+        <div class="flex items-start justify-between">
+            <div>
+                <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-900 text-white">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <h2 class="mt-4 text-xl font-bold text-slate-900">Supply Requisition</h2>
+                <p class="mt-1 text-sm text-slate-500">What type of items are you requesting?</p>
+            </div>
+            <button type="button" onclick="closeSupplyTypeModal()" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="{{ route('supply-requests.create', ['request_type' => 'Consumable']) }}"
+               class="group rounded-2xl border-2 border-slate-200 p-5 transition hover:border-emerald-500 hover:bg-emerald-50">
+                <span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 transition group-hover:bg-emerald-600 group-hover:text-white">
+                    <i class="fa-solid fa-box-open"></i>
+                </span>
+                <h3 class="mt-3 text-sm font-bold text-slate-900">Consumables</h3>
+                <p class="mt-1 text-xs leading-5 text-slate-500">Items that are used up (paper, ink, cleaning supplies, etc.)</p>
+            </a>
+
+            <a href="{{ route('supply-requests.create', ['request_type' => 'Non-Consumable']) }}"
+               class="group rounded-2xl border-2 border-slate-200 p-5 transition hover:border-emerald-500 hover:bg-emerald-50">
+                <span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-100 text-cyan-700 transition group-hover:bg-cyan-600 group-hover:text-white">
+                    <i class="fa-solid fa-toolbox"></i>
+                </span>
+                <h3 class="mt-3 text-sm font-bold text-slate-900">Non-Consumables</h3>
+                <p class="mt-1 text-xs leading-5 text-slate-500">Reusable / durable items (equipment, tools, furniture, etc.)</p>
+            </a>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button type="button" onclick="closeSupplyTypeModal()" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</button>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('settings-modal');
+
+        // ===== Supply Requisition type-selection modal =====
+        const supplyTypeModal = document.getElementById('supply-type-modal');
+        window.openSupplyTypeModal = function () {
+            supplyTypeModal.classList.remove('hidden');
+            supplyTypeModal.classList.add('flex');
+        };
+        window.closeSupplyTypeModal = function () {
+            supplyTypeModal.classList.add('hidden');
+            supplyTypeModal.classList.remove('flex');
+        };
+        supplyTypeModal.addEventListener('click', function (e) {
+            if (e.target === supplyTypeModal) window.closeSupplyTypeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !supplyTypeModal.classList.contains('hidden')) {
+                window.closeSupplyTypeModal();
+            }
+        });
         const openers = document.querySelectorAll('[data-modal-trigger="settings"]');
         const closers = document.querySelectorAll('[data-modal-close="settings"]');
 
