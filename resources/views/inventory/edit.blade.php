@@ -95,17 +95,68 @@
 
             {{-- Row: Supplier + Location + Receiver --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
+                <div x-data="{
+                    open: false,
+                    search: '',
+                    selectedId: '{{ old('supplier_id', $item->supplier_id) }}',
+                    selectedName: '{{ addslashes($suppliers->firstWhere('supplier_id', old('supplier_id', $item->supplier_id))?->supplier_name ?? '') }}',
+                    suppliers: {{ json_encode($suppliers->map(fn($s) => ['id' => (string) $s->supplier_id, 'name' => $s->supplier_name])) }},
+                    get filtered() {
+                        if (!this.search.trim()) return this.suppliers;
+                        const q = this.search.toLowerCase();
+                        return this.suppliers.filter(s => s.name.toLowerCase().includes(q));
+                    },
+                    select(s) {
+                        this.selectedId = s ? s.id : '';
+                        this.selectedName = s ? s.name : '';
+                        this.search = '';
+                        this.open = false;
+                    }
+                }" class="relative">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Supplier</label>
-                    <select name="supplier_id"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        <option value="">-- Select Supplier --</option>
-                        @foreach($suppliers as $supplier)
-                            <option value="{{ $supplier->supplier_id }}" {{ old('supplier_id', $item->supplier_id) == $supplier->supplier_id ? 'selected' : '' }}>
-                                {{ $supplier->supplier_name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <input type="hidden" name="supplier_id" :value="selectedId">
+                    
+                    <div class="relative">
+                        <input type="text"
+                               x-model="search"
+                               @focus="open = true"
+                               @click.outside="open = false; search = ''"
+                               @keydown.escape="open = false; search = ''"
+                               :placeholder="selectedName || '-- Search / Enter Supplier Name or Number --'"
+                               class="w-full px-3 py-2 pr-8 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white">
+                        <button type="button"
+                                @click="open = !open"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </button>
+                    </div>
+
+                    <div x-show="open"
+                         x-transition
+                         class="absolute z-30 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                         style="display: none;">
+                        <div @click="select(null)"
+                             class="px-3 py-2 text-xs text-gray-500 hover:bg-gray-100 cursor-pointer border-b border-gray-100 flex items-center justify-between">
+                            <span>-- No Supplier / Clear --</span>
+                        </div>
+                        <template x-for="s in filtered" :key="s.id">
+                            <div @click="select(s)"
+                                 :class="{ 'bg-emerald-50 font-semibold text-emerald-800': selectedId == s.id }"
+                                 class="px-3 py-2 text-sm text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 cursor-pointer flex items-center justify-between border-b border-gray-50 last:border-0">
+                                <span x-text="s.name"></span>
+                                <span x-show="selectedId == s.id" class="text-xs text-emerald-600"><i class="fa-solid fa-check"></i></span>
+                            </div>
+                        </template>
+                        <div x-show="filtered.length === 0" class="px-3 py-3 text-sm text-gray-400 text-center">
+                            No supplier found matching your search.
+                        </div>
+                    </div>
+
+                    <div x-show="selectedName" class="mt-1 flex items-center justify-between text-xs text-gray-500">
+                        <span class="truncate">Selected: <strong class="text-emerald-700 font-medium" x-text="selectedName"></strong></span>
+                        <button type="button" @click="select(null)" class="text-red-500 hover:text-red-700 ml-2 shrink-0">Clear</button>
+                    </div>
+                    @error('supplier_id') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
