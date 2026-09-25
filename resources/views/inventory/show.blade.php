@@ -3,6 +3,16 @@
 @section('title', $item->item_name . ' - Inventory - DARTS')
 @section('page-title', $item->item_name)
 
+@php
+    $qrPayload = $item->qrcode ?: json_encode([
+        'id' => $item->inventory_id ?? null,
+        'item_name' => $item->item_name,
+        'category' => $item->category,
+        'brand' => $item->brand,
+        'unit_cost' => $item->unit_cost,
+        'current_stock' => $item->current_stock,
+    ]);
+@endphp
 @section('content')
 <div class="space-y-6">
     {{-- Back link --}}
@@ -108,7 +118,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @forelse($item->stockLogs as $log)
+                            @forelse($logs as $log)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-600">{{ $log->date_created ? date('M d, Y h:i A', strtotime($log->date_created)) : '--' }}</td>
                                 <td class="px-6 py-3 whitespace-nowrap">
@@ -137,6 +147,11 @@
                         </tbody>
                     </table>
                 </div>
+                @if($logs->hasPages())
+                    <div class="px-6 py-3 border-t border-gray-100">
+                        {{ $logs->appends(request()->query())->links() }}
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -233,7 +248,33 @@
                     @endif
                 </div>
             </div>
+
+            {{-- QR Code --}}
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fa-solid fa-qrcode text-emerald-600 mr-2"></i> QR Code
+                </h3>
+                <div class="flex flex-col items-center">
+                    <div class="p-3 bg-white border border-gray-200 rounded-lg qr-box">{!! $qrCode !!}</div>
+                    <p class="mt-3 text-xs text-gray-500 text-center break-all max-w-full">Scanning shows this item's full information.</p>
+                    <button type="button" onclick="downloadQr(this, '{{ addslashes($item->item_name) }}')" class="mt-3 inline-flex items-center px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                        <i class="fa-solid fa-download mr-1"></i> Download QR
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    window.downloadQr = function (btn, name) {
+        const svg = btn.closest('.qr-box, #qrContainer, .modal-view-body').querySelector('svg');
+        if (!svg) return;
+        const data = new XMLSerializer().serializeToString(svg);
+        const a = document.createElement('a');
+        a.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(data);
+        a.download = 'qr-' + (name || 'item') + '.svg';
+        a.click();
+    };
+</script>
 @endsection
