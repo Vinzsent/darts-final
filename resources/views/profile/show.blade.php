@@ -14,8 +14,12 @@
         <div class="px-6 pb-6 pt-0 relative">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-12 gap-4 pb-4 border-b border-gray-100">
                 <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 text-center sm:text-left">
-                    <div class="h-24 w-24 rounded-2xl bg-emerald-600 border-4 border-white shadow-md flex items-center justify-center text-2xl font-bold text-white tracking-wider">
-                        {{ substr($user->first_name ?? 'U', 0, 1) }}{{ substr($user->last_name ?? 'S', 0, 1) }}
+                    <div class="h-24 w-24 rounded-2xl overflow-hidden bg-emerald-600 border-4 border-white shadow-md flex items-center justify-center text-2xl font-bold text-white tracking-wider shrink-0">
+                        @if($user->profile_url)
+                            <img src="{{ $user->profile_url }}" alt="{{ $user->display_name }}" class="w-full h-full object-cover">
+                        @else
+                            {{ $user->initials }}
+                        @endif
                     </div>
                     <div class="pt-2">
                         <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2 justify-center sm:justify-start">
