@@ -45,7 +45,7 @@
                 ['label' => 'Maintenance', 'icon' => 'fa-screwdriver-wrench', 'route' => 'property.index', 'color' => 'cyan', 'description' => 'Maintenance and repair tracking', 'roles' => ['admin', 'Property Custodian']],
                 ['label' => 'Disposal', 'icon' => 'fa-trash-can', 'route' => 'property.index', 'color' => 'red', 'description' => 'Disposition and disposal register', 'roles' => ['admin', 'Property Custodian']],
                 ['label' => 'Property Reports', 'icon' => 'fa-chart-pie', 'route' => 'reports.index', 'color' => 'blue', 'description' => 'Property report summaries', 'roles' => ['admin', 'Property Custodian']],
-                ['label' => 'Supply Reports', 'icon' => 'fa-file-export', 'route' => 'reports.index', 'color' => 'violet', 'description' => 'Supply operations statistics', 'roles' => ['admin', 'Supply In-charge']],
+                ['label' => 'Supply Reports', 'icon' => 'fa-file-export', 'route' => 'supply-reports.index', 'color' => 'violet', 'description' => 'Inventory, issuance, and office requisition reports', 'roles' => ['admin', 'Supply In-charge']],
                 ['label' => 'Notifications', 'icon' => 'fa-bell', 'route' => 'notifications.index', 'color' => 'sky', 'description' => 'Notifications and activity feed', 'roles' => ['*']],
                 ['label' => 'My Profile', 'icon' => 'fa-id-card', 'route' => 'profile.show', 'color' => 'teal', 'description' => 'View and edit account information', 'roles' => ['*']],
                 ['label' => 'System Settings', 'icon' => 'fa-gear', 'route' => 'settings', 'color' => 'gray', 'description' => 'Configuration and system controls', 'roles' => ['admin', 'administrator']],
