@@ -28,6 +28,46 @@
     </div>
     @endif
 
+    {{-- Summary Cards --}}
+    @php
+        $sc = match($procurement->status) {
+            'Received' => 'bg-emerald-100 text-emerald-800',
+            'Pending' => 'bg-amber-100 text-amber-800',
+            'Cancelled' => 'bg-red-100 text-red-700',
+            default => 'bg-gray-100 text-gray-600',
+        };
+    @endphp
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Status</span>
+                <i class="fa-solid fa-circle-info text-emerald-600"></i>
+            </div>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold mt-2 {{ $sc }}">{{ $procurement->status ?? '--' }}</span>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Invoice No.</span>
+                <i class="fa-solid fa-file-lines text-emerald-600"></i>
+            </div>
+            <p class="text-lg font-bold text-gray-900 mt-1 truncate">{{ $procurement->invoice_no ?? '--' }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Amount</span>
+                <i class="fa-solid fa-coins text-emerald-600"></i>
+            </div>
+            <p class="text-lg font-bold text-emerald-700 mt-1">₱{{ number_format($procurement->amount, 2) }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Supplier</span>
+                <i class="fa-solid fa-truck text-emerald-600"></i>
+            </div>
+            <p class="text-sm font-semibold text-gray-900 mt-1 truncate">{{ $procurement->supplier->supplier_name ?? '--' }}</p>
+        </div>
+    </div>
+
     {{-- Main Details Card --}}
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
