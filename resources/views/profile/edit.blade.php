@@ -19,9 +19,85 @@
         </div>
 
         {{-- Form --}}
-        <form method="POST" action="{{ route('profile.update') }}" class="p-6 space-y-6">
+        <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="p-6 space-y-6"
+              x-data="{
+                  previewUrl: '{{ $user->profile_url }}',
+                  removePhoto: false,
+                  handleFileSelect(event) {
+                      const file = event.target.files[0];
+                      if (file) {
+                          if (file.size > 2 * 1024 * 1024) {
+                              alert('File size exceeds 2MB limit.');
+                              event.target.value = '';
+                              return;
+                          }
+                          this.removePhoto = false;
+                          this.previewUrl = URL.createObjectURL(file);
+                      }
+                  },
+                  clearPhoto() {
+                      this.previewUrl = null;
+                      this.removePhoto = true;
+                      $refs.fileInput.value = '';
+                  }
+              }">
             @csrf
             @method('PUT')
+
+            {{-- Hidden input for photo removal --}}
+            <input type="hidden" name="remove_profile" :value="removePhoto ? '1' : '0'">
+
+            {{-- Profile Photo Upload Section --}}
+            <div class="p-5 bg-gradient-to-r from-emerald-50/70 via-teal-50/40 to-slate-50/80 rounded-2xl border border-emerald-100/80">
+                <h3 class="text-sm font-semibold text-emerald-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-camera text-emerald-600"></i>
+                    Profile Picture
+                </h3>
+
+                <div class="flex flex-col sm:flex-row items-center gap-5">
+                    {{-- Avatar Preview Frame --}}
+                    <div class="relative group shrink-0">
+                        <div class="w-24 h-24 rounded-2xl overflow-hidden shadow-md border-2 border-white ring-2 ring-emerald-500/20 bg-emerald-700 flex items-center justify-center text-white font-bold text-2xl tracking-wider">
+                            <template x-if="previewUrl">
+                                <img :src="previewUrl" alt="Profile Preview" class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!previewUrl">
+                                <span>{{ $user->initials }}</span>
+                            </template>
+                        </div>
+                        <button type="button" @click="$refs.fileInput.click()"
+                                class="absolute inset-0 bg-black/40 text-white rounded-2xl flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200">
+                            <i class="fa-solid fa-camera text-base"></i>
+                            <span class="text-[10px] font-medium mt-0.5">Change</span>
+                        </button>
+                    </div>
+
+                    {{-- Upload Controls & Guidelines --}}
+                    <div class="flex-1 text-center sm:text-left space-y-2">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+                            <input type="file" id="profile" name="profile" x-ref="fileInput" @change="handleFileSelect"
+                                   accept="image/jpeg,image/png,image/jpg,image/webp" class="hidden">
+                            <button type="button" @click="$refs.fileInput.click()"
+                                    class="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-xl border border-emerald-300 shadow-sm transition">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Upload New Photo</span>
+                            </button>
+                            <button type="button" x-show="previewUrl" @click="clearPhoto()"
+                                    class="inline-flex items-center gap-1.5 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-xl border border-red-200 transition"
+                                    style="display: none;">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                                <span>Remove</span>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500">
+                            Allowed formats: <span class="font-medium text-gray-700">JPG, PNG, WEBP</span> &bull; Max size: <span class="font-medium text-gray-700">2MB</span>
+                        </p>
+                        @error('profile')
+                            <p class="text-xs text-red-600 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            </div>
 
             {{-- Personal Information Section --}}
             <div>
