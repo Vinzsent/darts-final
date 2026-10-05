@@ -16,7 +16,7 @@ class PropertyReportController extends Controller
         $brands = Aircon::distinct()->orderBy('brand')->pluck('brand')->filter()->values();
         $airconStatuses = Aircon::distinct()->orderBy('status')->pluck('status')->filter()->values();
 
-        return view('property-reports.index', [
+        return view($this->indexView(), [
             'mode' => $this->mode(),
             'tabs' => $this->tabs(),
             'previewUrl' => route('property-reports.preview'),
@@ -41,30 +41,51 @@ class PropertyReportController extends Controller
         ];
     }
 
+    /** Report types this controller accepts. */
+    protected function reportTypes(): array
+    {
+        return ['inventory', 'logs', 'aircon'];
+    }
+
+    protected function indexView(): string
+    {
+        return 'property-reports.index';
+    }
+
+    protected function previewView(): string
+    {
+        return 'property-reports._preview';
+    }
+
+    protected function printView(): string
+    {
+        return 'property-reports.print';
+    }
+
     public function preview(Request $request)
     {
         $type = $request->get('report_type', 'inventory');
-        abort_unless(in_array($type, ['inventory', 'logs', 'aircon']), 400);
+        abort_unless(in_array($type, $this->reportTypes(), true), 400);
 
         $items = $this->queryFor($request, $type)->paginate(10);
         $totals = $this->totalsFor($request, $type);
 
-        return view('property-reports._preview',
+        return view($this->previewView(),
             ['items' => $items, 'type' => $type, 'totals' => $totals, 'generated' => now(), 'mode' => $this->mode()])->render();
     }
 
     public function export(Request $request)
     {
         $type = $request->get('report_type', 'inventory');
-        abort_unless(in_array($type, ['inventory', 'logs', 'aircon']), 400);
+        abort_unless(in_array($type, $this->reportTypes(), true), 400);
         $format = $request->get('format', 'csv');
-        abort_unless(in_array($format, ['csv', 'pdf']), 400);
+        abort_unless(in_array($format, ['csv', 'pdf'], true), 400);
 
         if ($format === 'pdf') {
             $items = $this->queryFor($request, $type)->get();
             $totals = $this->totalsFor($request, $type);
 
-            return view('property-reports.print',
+            return view($this->printView(),
                 ['items' => $items, 'type' => $type, 'totals' => $totals, 'generated' => now(), 'mode' => $this->mode()]);
         }
 
@@ -82,7 +103,7 @@ class PropertyReportController extends Controller
             'Content-Disposition' => 'attachment; filename="' . $name . '"',
         ]);
     }
-    private function queryFor(Request $request, string $type)
+    protected function queryFor(Request $request, string $type)
     {
         if ($type === 'inventory') {
             $q = PropertyInventory::query();
@@ -174,7 +195,7 @@ class PropertyReportController extends Controller
         return $q->orderBy('aircon_id');
     }
 
-    private function totalsFor(Request $request, string $type): array
+    protected function totalsFor(Request $request, string $type): array
     {
         if ($type === 'inventory') {
             $items = $this->queryFor($request, $type)->get();
@@ -186,7 +207,7 @@ class PropertyReportController extends Controller
 
         return [];
     }
-    private function rowsFor(Request $request, string $type): array
+    protected function rowsFor(Request $request, string $type): array
     {
         if ($type === 'inventory') {
             $items = $this->queryFor($request, $type)->get();
