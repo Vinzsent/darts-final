@@ -100,7 +100,7 @@
                                 </form>
                                 @endif
                                 <form action="{{ route('procurement.destroy', $p->transaction_id) }}" method="POST" class="inline"
-                                      onsubmit="return confirm('Are you sure you want to delete this procurement record?')">
+                                      onsubmit="return confirmDelete(this)">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-800 transition" title="Delete">
