@@ -135,7 +135,7 @@
                         <div class="rounded-xl border border-slate-200 overflow-hidden">
                             <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-xs font-bold uppercase tracking-wide text-slate-600">Personnel Number</div>
                             <div class="p-4 flex items-center gap-3">
-                                <i class="fa-solid fa-barcode text-2xl text-slate-400"></i>
+                                <i class="fa-solid fa-id-badge text-2xl text-slate-400"></i>
                                 <span id="pmEid" class="px-3 py-1.5 rounded-lg bg-slate-100 font-mono text-sm font-semibold text-slate-900">—</span>
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                 <div class="mt-4 rounded-xl border border-slate-200 overflow-hidden">
                     <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-2 text-xs text-slate-500">
                         <button type="button" onclick="openCheckInModal()" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 transition cursor-pointer"><i class="fa-solid fa-right-to-bracket text-emerald-600"></i> Check In</button>
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200"><i class="fa-solid fa-right-from-bracket text-red-500"></i> Check Out (F3)</span>
+                        <button type="button" onclick="openCheckOutModal()" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 hover:border-red-400 hover:bg-red-50 hover:text-red-700 transition cursor-pointer"><i class="fa-solid fa-right-from-bracket text-red-500"></i> Check Out (F3)</button>
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200"><i class="fa-solid fa-folder-open text-amber-500"></i> Open</span>
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200"><i class="fa-solid fa-file-export text-blue-500"></i> Checked Out Report</span>
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200"><i class="fa-solid fa-receipt text-violet-500"></i> Receipt</span>
@@ -346,6 +346,100 @@
     </div>
 </div>
 
+{{-- Check Out Modal --}}
+<div id="checkoutModal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
+    <div class="flex min-h-full items-center justify-center p-2 sm:p-4">
+        <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="closeCheckOutModal()"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md sm:max-w-2xl max-h-[92vh] overflow-hidden flex flex-col">
+            {{-- Title bar --}}
+            <div class="px-4 py-3 sm:px-6 sm:py-4 bg-emerald-700 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                    <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white"><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <div class="min-w-0">
+                        <h3 class="text-base font-bold text-white leading-tight">Check Out</h3>
+                        <p id="coSubtitle" class="text-xs text-white/70 truncate">Select items to check out to this person.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeCheckOutModal()" class="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="checkoutForm" class="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto" onsubmit="return false;">
+                @csrf
+                <input type="hidden" name="personnel_id" id="coPersonnelId">
+
+                {{-- Available Items --}}
+                <div class="rounded-xl border border-slate-200 overflow-hidden">
+                    <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-xs font-bold uppercase tracking-wide text-slate-600">Available Assets to Check Out</div>
+                    <div class="overflow-x-auto max-h-56 overflow-y-auto">
+                        <table class="w-full min-w-[560px] divide-y divide-slate-200">
+                            <thead class="bg-slate-50 sticky top-0">
+                                <tr>
+                                    <th class="w-10 px-3 py-2"></th>
+                                    <th class="px-4 py-2 text-left text-xs font-bold uppercase text-slate-500">Asset Num.</th>
+                                    <th class="px-4 py-2 text-left text-xs font-bold uppercase text-slate-500">Description</th>
+                                    <th class="px-4 py-2 text-left text-xs font-bold uppercase text-slate-500">Category</th>
+                                    <th class="px-4 py-2 text-left text-xs font-bold uppercase text-slate-500">Avail.</th>
+                                    <th class="px-4 py-2 text-left text-xs font-bold uppercase text-slate-500">Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coItemsBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                    <div id="coItemsEmpty" class="hidden px-4 py-8 text-center">
+                        <p class="italic text-sm text-slate-400">No available assets to check out.</p>
+                    </div>
+                    <div class="px-4 py-3 border-t border-slate-200 flex items-center gap-2 bg-slate-50">
+                        <input type="text" id="coSearch" placeholder="Filter items..." class="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-w-0">
+                        <button type="button" onclick="filterCoItems()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-600 text-sm rounded-lg hover:bg-slate-100 transition shrink-0">
+                            <i class="fa-solid fa-magnifying-glass mr-1 text-emerald-600"></i>Search
+                        </button>
+                    </div>
+                </div>
+                {{-- Status / Location / Comments --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Set Status To:</label>
+                        <select name="status" id="coStatus" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="Out">Out</option>
+                            <option value="In Use">In Use</option>
+                            <option value="For Repair">For Repair</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Location / Department:</label>
+                        <input type="text" name="location" placeholder="Optional location or department" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Comments:</label>
+                    <textarea name="comments" rows="3" placeholder="Optional notes about this check-out..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                </div>
+
+                <label class="flex items-center justify-end gap-2 text-sm text-slate-600 cursor-pointer select-none">
+                    <input type="checkbox" name="print_receipt" class="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                    Print Check Out Receipt
+                </label>
+
+                {{-- Footer --}}
+                <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 border-t border-slate-200">
+                    <span id="coError" class="hidden text-sm text-red-600"><i class="fa-solid fa-circle-exclamation mr-1"></i>Select at least one item.</span>
+                    <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
+                        <button type="button" id="coCompleteBtn" onclick="completeCheckOut()" class="w-full sm:w-auto px-5 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition shadow-sm disabled:opacity-50">
+                            <i class="fa-solid fa-circle-check mr-2"></i>Complete Check Out
+                        </button>
+                        <button type="button" onclick="closeCheckOutModal()" class="w-full sm:w-auto px-5 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-200 transition">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     // Debounced search
@@ -393,8 +487,13 @@
 
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
-            if (!document.getElementById('checkinModal').classList.contains('hidden')) closeCheckInModal();
+            if (!document.getElementById('checkoutModal').classList.contains('hidden')) closeCheckOutModal();
+            else if (!document.getElementById('checkinModal').classList.contains('hidden')) closeCheckInModal();
             else closePersonnelModal();
+        }
+        if ((e.key === 'F3')) {
+            e.preventDefault();
+            if (!document.getElementById('personnelModal').classList.contains('hidden')) openCheckOutModal();
         }
     });
 
@@ -404,8 +503,12 @@
         const fullName = [e.title, e.first_name, e.middle_name, e.last_name, e.suffix].filter(Boolean).join(' ');
         const initials = (((e.first_name || '')[0] || '') + ((e.last_name || '')[0] || '')).toUpperCase();
         document.getElementById('pmTitle').textContent = `${e.last_name || ''}, ${e.first_name || ''}${e.eid ? ` (${e.eid})` : ''}`;
-        document.getElementById('pmAvatar').textContent = initials || '?';
-        document.getElementById('pmPhoto').textContent = initials || '?';
+        document.getElementById('pmAvatar').innerHTML = e.profile_url
+            ? `<img src="${esc(e.profile_url)}" alt="${esc(fullName)}" class="h-full w-full rounded-full object-cover">`
+            : (initials || '?');
+        document.getElementById('pmPhoto').innerHTML = e.profile_url
+            ? `<img src="${esc(e.profile_url)}" alt="${esc(fullName)}" class="h-full w-full rounded-2xl object-cover">`
+            : (initials || '?');
         document.getElementById('pmName').textContent = fullName || '—';
         document.getElementById('pmEmail').textContent = e.email || '—';
         document.getElementById('pmCampus').textContent = e.campus || '—';
@@ -532,6 +635,7 @@
                     items: ids.map(Number),
                     status: document.getElementById('ciStatus').value,
                     comments: document.querySelector('#checkinForm textarea[name="comments"]').value,
+                    print_receipt: document.querySelector('#checkinForm input[name="print_receipt"]').checked,
                 }),
             });
             if (!res.ok) throw new Error('Request failed');
@@ -543,6 +647,102 @@
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i>Complete Check In';
+        }
+    }
+    // ===== Check Out Modal =====
+    function openCheckOutModal() {
+        const data = window._personnelData;
+        if (!data) return;
+
+        const custodian = `${data.employee.last_name || ''}, ${data.employee.first_name || ''}`.replace(/^, |, $/, '');
+        document.getElementById('coSubtitle').textContent = `Checking out assets to ${custodian || 'this person'}.`;
+        document.getElementById('coPersonnelId').value = window._personnelId;
+        document.getElementById('coSearch').value = '';
+        document.getElementById('coError').classList.add('hidden');
+        document.getElementById('coStatus').value = 'Out';
+        document.getElementById('coItemsBody').innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-sm text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading assets...</td></tr>';
+
+        document.getElementById('checkoutModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        fetch(`/personnel/assets/available`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => { if (!r.ok) throw new Error('Failed'); return r.json(); })
+            .then(data => {
+                const items = (data.items || []).filter(i => !i.already_out);
+                const body = document.getElementById('coItemsBody');
+                const empty = document.getElementById('coItemsEmpty');
+                empty.classList.toggle('hidden', items.length > 0);
+                body.innerHTML = items.map(a => `
+                    <tr class="co-row hover:bg-red-50/40" data-text="${esc((a.property_id || '') + ' ' + (a.item_name || '') + ' ' + (a.brand || '') + ' ' + (a.category || '')).toLowerCase()}">
+                        <td class="px-3 py-2"><input type="checkbox" class="co-check h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500" value="${esc(a.property_id)}"></td>
+                        <td class="px-4 py-2 text-sm font-mono text-slate-700">${esc(a.property_id)}</td>
+                        <td class="px-4 py-2 text-sm text-slate-900">${esc(a.item_name)}${a.brand ? ` <span class="text-slate-400">(${esc(a.brand)})</span>` : ''}</td>
+                        <td class="px-4 py-2 text-sm text-slate-600">${esc(a.category) || '—'}</td>
+                        <td class="px-4 py-2 text-sm text-slate-600">${esc(a.available)} ${esc(a.unit || '')}</td>
+                        <td class="px-4 py-2"><input type="number" class="co-qty w-16 px-1.5 py-1 border border-slate-300 rounded-lg text-sm text-center focus:ring-2 focus:ring-red-500 focus:border-red-500" value="1" min="1" max="${esc(a.available)}" disabled></td>
+                    </tr>`).join('');
+                document.querySelectorAll('.co-check').forEach(cb => cb.addEventListener('change', function () {
+                    this.closest('tr').querySelector('.co-qty').disabled = !this.checked;
+                    if (this.checked) this.closest('tr').querySelector('.co-qty').focus();
+                }));
+            })
+            .catch(() => {
+                document.getElementById('coItemsBody').innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-sm text-red-500">Could not load available assets.</td></tr>';
+            });
+    }
+
+    function closeCheckOutModal() {
+        document.getElementById('checkoutModal').classList.add('hidden');
+        document.body.style.overflow = 'hidden'; // personnel modal still open underneath
+    }
+
+    function filterCoItems() {
+        const q = document.getElementById('coSearch').value.trim().toLowerCase();
+        document.querySelectorAll('.co-row').forEach(row => {
+            row.style.display = !q || row.dataset.text.includes(q) ? '' : 'none';
+        });
+    }
+    document.getElementById('coSearch').addEventListener('input', filterCoItems);
+    document.getElementById('coSearch').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); filterCoItems(); } });
+
+    async function completeCheckOut() {
+        const items = [...document.querySelectorAll('.co-check:checked')].map(cb => ({
+            property_id: Number(cb.value),
+            quantity: Math.max(1, parseInt(cb.closest('tr').querySelector('.co-qty').value || '1', 10) || 1),
+        }));
+        const err = document.getElementById('coError');
+        if (!items.length) { err.classList.remove('hidden'); return; }
+        err.classList.add('hidden');
+
+        const btn = document.getElementById('coCompleteBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Processing...';
+
+        try {
+            const res = await fetch(`/personnel/${window._personnelId}/check-out`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('#checkoutForm input[name="_token"]').value,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    items,
+                    status: document.getElementById('coStatus').value,
+                    location: document.querySelector('#checkoutForm input[name="location"]').value,
+                    comments: document.querySelector('#checkoutForm textarea[name="comments"]').value,
+                    print_receipt: document.querySelector('#checkoutForm input[name="print_receipt"]').checked,
+                }),
+            });
+            if (!res.ok) throw new Error('Request failed');
+            closeCheckOutModal();
+            openPersonnelModal(window._personnelId); // refresh data
+        } catch (ex) {
+            err.textContent = 'Check-out failed. Please try again.';
+            err.classList.remove('hidden');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i>Complete Check Out';
         }
     }
 </script>
