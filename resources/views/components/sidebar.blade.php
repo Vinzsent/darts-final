@@ -37,7 +37,8 @@ $groups = [
             ['label' => 'Personnel', 'icon' => 'fa-solid fa-users', 'route' => 'personnel.index', 'roles' => ['admin', 'Property Custodian', 'Supply In-charge']],
             ['label' => 'Users', 'icon' => 'fa-solid fa-user-shield', 'route' => 'users.index', 'roles' => ['admin', 'administrator']],
             ['label' => 'School Years', 'icon' => 'fa-solid fa-calendar-days', 'route' => 'school-years.index', 'roles' => ['admin']],
-            ['label' => $userType === 'supply in-charge' ? 'Supply Reports' : 'Property Reports', 'icon' => 'fa-solid fa-print', 'route' => $userType === 'supply in-charge' ? 'supply-reports.index' : 'property-reports.index', 'roles' => ['admin', 'Supply In-charge', 'Property Custodian']],
+            ['label' => 'Property Reports', 'icon' => 'fa-solid fa-print', 'route' => 'property-reports.index', 'roles' => ['admin', 'Property Custodian']],
+            ['label' => 'Supply Reports', 'icon' => 'fa-solid fa-print', 'route' => 'supply-reports.index', 'roles' => ['admin', 'Supply In-charge']],
         ],
     ],
 ];
