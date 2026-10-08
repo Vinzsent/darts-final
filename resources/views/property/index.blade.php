@@ -72,7 +72,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($properties as $property)
-                    <tr class="hover:bg-gray-50 transition">
+                    <tr class="hover:bg-gray-50 transition cursor-pointer" ondblclick="openViewModal(this.querySelector('[data-url]'))">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="w-9 h-9 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center mr-3">
@@ -125,7 +125,7 @@
                                 <a href="{{ route('property.edit', $property->inventory_id) }}" class="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition" title="Edit">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
-                                <form action="{{ route('property.destroy', $property->inventory_id) }}" method="POST" onsubmit="return confirm('Delete this property item?')" class="inline">
+                                <form action="{{ route('property.destroy', $property->inventory_id) }}" method="POST" onsubmit="return confirmDelete(this)" class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
