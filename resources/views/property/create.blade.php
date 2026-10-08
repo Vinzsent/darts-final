@@ -14,10 +14,36 @@
         </div>
 
         <form action="{{ route('property.store') }}" method="POST" class="p-6 space-y-6">
+    {{-- Scan Request QR --}}
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+        <h3 class="text-sm font-semibold text-gray-900 flex items-center">
+            <i class="fa-solid fa-qrcode text-emerald-600 mr-2"></i> Scan Request QR Code
+        </h3>
+        <p class="text-xs text-gray-500 mt-1">Scan or paste the employee's request QR code to auto-fill this form.</p>
+        <div id="qrReader" class="hidden mt-3 rounded-lg overflow-hidden border border-emerald-200 max-w-xs"></div>
+        <div class="mt-3 flex flex-col sm:flex-row gap-2">
+            <button type="button" id="qrScanBtn" class="inline-flex items-center justify-center px-3 py-2 text-xs font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition">
+                <i class="fa-solid fa-camera mr-2"></i> Scan with Camera
+            </button>
+            <input type="text" id="qrManual" placeholder="...or paste QR code / SKU here" class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 outline-none">
+            <button type="button" id="qrApplyBtn" class="inline-flex items-center justify-center px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                <i class="fa-solid fa-check mr-2"></i> Apply
+            </button>
+        </div>
+        <p id="qrStatus" class="mt-2 text-xs text-gray-500 hidden"></p>
+        <input type="hidden" name="qrcode" id="qrcodeInput" value="{{ old('qrcode') }}">
+    </div>
+
             @csrf
 
             {{-- Row: Item Name + Category --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">SKU <span class="text-gray-400 text-xs">(auto-generated)</span></label>
+                    <input type="text" name="sku" value="{{ old('sku', $suggestedSku) }}" readonly
+                           class="w-full px-3 py-2 border border-gray-200 bg-gray-50 rounded-lg text-sm font-mono text-gray-600 cursor-not-allowed">
+                    @error('sku')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Item Name <span class="text-red-500">*</span></label>
                     <input type="text" name="item_name" value="{{ old('item_name') }}" required
@@ -217,4 +243,5 @@
     }
 </script>
 @endpush
+<x-qr-autofill />
 @endsection
